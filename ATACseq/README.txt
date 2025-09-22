@@ -1,0 +1,1 @@
+These scripts are based on the code found here: https://github.com/cosmintudose/PRC2_AML_chromatin/tree/main/ATAC_Seq 
