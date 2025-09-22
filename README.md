@@ -3,4 +3,5 @@ This is a folder containing all the scripts I have used for the chromatin analys
 2. RNAsequencing analysis of 3 patient datasets
 3. ATACsequencing analysis of cell lines
 4. Cut and Run with sequencing analysis of cell lines
-5. Immunoprecip;itation with Mass Spectrometry volcano plots
+5. Immunoprecipitation with Mass Spectrometry volcano plots
+6. SynergyFinder
