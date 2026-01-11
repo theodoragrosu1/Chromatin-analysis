@@ -1,0 +1,87 @@
+import pandas as pd
+import re
+import numpy as np
+
+configfile: "config.yaml"
+
+samples = pd.read_csv(config["samples"], sep = '\t').set_index("sample_id", drop=False)
+SAMPLE_NAMES = samples['sample_id'].tolist()
+
+conditions = ["C5", "C9", "WT"]
+marks = ["me3", "ac"]
+replicates = ["1", "2"]
+
+
+localrules: all
+
+rule all:
+	input:
+		expand("fastq/fastqc/{sample}_{read}_fastqc.html",
+			sample = SAMPLE_NAMES,
+			read = ["R1", "R2"]),
+		expand("fastq/fastqc/{sample}_{read}_fastqc.html",
+			sample = SAMPLE_NAMES,
+			read = ["R1", "R2"]),
+		"multiqc_report.html",
+		expand("count_reads/before_trimming/{sample}_{read}_reads.txt",
+			sample = SAMPLE_NAMES,
+			read = ["R1", "R2"]),
+		expand("fastq_trimmed/{sample}_R1_{type}.fq.gz",
+			sample = SAMPLE_NAMES,
+			type = ["paired", "unpaired"]),
+		expand("fastq_trimmed/{sample}_R2_{type}.fq.gz",
+			sample = SAMPLE_NAMES,
+			type = ["paired", "unpaired"]),
+		expand("fastq_trimmed/fastqc_post_trimming/{sample}_{read}_paired_fastqc.html",
+			sample = SAMPLE_NAMES, 
+			read = ["R1", "R2"]),
+		expand("count_reads/before_alignment/{sample}_{read}.txt",
+			sample = SAMPLE_NAMES,
+			read = ["R1", "R2"]),
+		"multiqc_report_post_trimming/multiqc_report.html",
+		expand("stats_{sample}_bowtie2.txt",
+			sample = SAMPLE_NAMES),
+		expand("count_reads/after_alignment/{sample}_reads_after_alignment.txt",
+			sample = SAMPLE_NAMES),
+		expand("dupes/{sample}/{sample}_marked_duplicates.bam", 
+			sample = SAMPLE_NAMES),
+		expand("dupes/{sample}/{sample}_marked_duplicates.bam.bai", 
+			sample = SAMPLE_NAMES),
+		expand("dupes/{sample}_dup_metrics.txt",
+			sample = SAMPLE_NAMES),
+		expand("deduped/{sample}/{sample}_deduped.bam", 
+			sample = SAMPLE_NAMES),
+		expand("deduped/{sample}/{sample}_deduped.bam.bai",
+			sample = SAMPLE_NAMES),
+		expand("count_reads/after_alignment/{sample}_reads_deduped_bam.txt", 
+			sample = SAMPLE_NAMES),
+		#expand("stats_spikein_{sample}_bowtie2.txt", 
+		#	sample = SAMPLE_NAMES),
+		#expand("bams_spikein/spikein_{sample}.bam",
+		#	sample = SAMPLE_NAMES),
+		#expand("count_reads/after_alignment/spikein/{sample}_reads_after_alignment.txt",
+		#	sample = SAMPLE_NAMES),
+		#expand("dupes_spikein/{sample}/{sample}_marked_duplicates.bam", 
+		#	sample = SAMPLE_NAMES),
+		#expand("dupes_spikein/{sample}/{sample}_marked_duplicates.bam.bai", 
+		#	sample = SAMPLE_NAMES),
+		#expand("dupes_spikein/{sample}_dup_metrics.txt",
+		#	sample = SAMPLE_NAMES),
+		#expand("deduped_spikein/{sample}/{sample}_deduped.bam", 
+		#	sample = SAMPLE_NAMES),
+		#expand("deduped_spikein/{sample}/{sample}_deduped.bam.bai",
+		#	sample = SAMPLE_NAMES),
+		#expand("count_reads/after_alignment/spikein/{sample}_reads_deduped_bam.txt", 
+		#	sample = SAMPLE_NAMES),
+		expand("bedgraphs/{sample}/{sample}.bedgraph",
+			sample = SAMPLE_NAMES),
+		expand("bedgraphs/{sample}/{sample}.bigwig", 
+			sample = SAMPLE_NAMES),
+		expand("bigwigs/{sample}_deduped.bigwig", 
+			sample = SAMPLE_NAMES),
+
+include: "qc.smk"
+include: "alignment.smk"
+include: "filtering.smk"
+#include: "spikein_align_and_filter.smk" #for us, spikein normalization did not work due to low amount of spikein DNA
+include: "create_outputs.smk" #this doesn't work with the snakemake due to incompatibility with deeptools/matplotlib version - switching to the deeptools environment
