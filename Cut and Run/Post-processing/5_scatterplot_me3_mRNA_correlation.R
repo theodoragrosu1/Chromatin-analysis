@@ -3,6 +3,11 @@ library(tidyverse)
 library(edgeR)
 library(reshape2)
 library(VennDiagram)
+library(dplyr)
+library(ggplot2)
+library(ggpointdensity)
+library(viridis)
+library(ggpubr)
 
 #this script uses output from 3_reannotation_of_peaks.R script 
 #output: correlation analysis with gene expression
@@ -153,6 +158,22 @@ a7_me3_gene_expr <- ggplot(me3_and_rna, aes(x = logFC_A7_WT, y = LogFC)) +
   theme(axis.title = element_text(face = "bold", size = 12),
         plot.title = element_text(hjust = 0.5, face = "bold"),
         legend.position = "right")
+
+a7_me3_vs_expr <- left_join(RPKM_A7, expression_wt_vs_a7, by = "geneID") %>%
+  drop_na(LogFC) %>%
+  #dplyr::filter(geneID %in% unique(c(annotated_peaks_wt_me3_saf$GeneID, annotated_peaks_c5_me3_saf$GeneID))) %>%
+  ggplot(aes(x = logFC_A7_WT, y = LogFC)) +
+  geom_pointdensity(size = 2) +
+  scale_color_viridis() + 
+  stat_cor(aes(label = paste("R==", ..r.., "*paste(\";\")~~~p ==",
+                             10^(log10(..p..) %% 1), "%*% 10^",
+                             floor(log10(..p..)))), label.x = 1, size = 5) + 
+  labs(x = "H3K27me3 LFC\nA7 - WT", y = "mRNA LFC\nA7 - WT") + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 6)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 7)) + 
+  theme_classic(base_size = 24) + 
+  theme(legend.position = "null")
+
 
 ggsave(a7_me3_gene_expr, file = ".\\scatter_density_a7_me3.pdf", width = 7, height = 6, dpi = 300)
 
