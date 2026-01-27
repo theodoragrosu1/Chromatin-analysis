@@ -4,4 +4,4 @@ This is a folder containing all the scripts I have used for the chromatin analys
 3. ATACsequencing analysis of cell lines
 4. Cut and Run with sequencing analysis of cell lines
 
-5. also includes a folder for all the enviornment configurations in conda and a folder with the codefor the pygenometracks (integration of ATACseq, Cut and Run, and HiC for visualization purposes)
+5. also includes a folder for all the enviornment configurations in conda and a folder with the code for the pygenometracks and deeptools heatmaps (integration of ATACseq, Cut and Run, and HiC for visualization purposes)
