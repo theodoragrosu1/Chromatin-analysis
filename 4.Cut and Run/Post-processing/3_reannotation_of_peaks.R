@@ -30,7 +30,7 @@ dir <- ".\\macs2_peaks\\H3K27me3\\contrasts\\"
 #load peak files
 peak_files <- list(WT_me3_peaks = paste0(dir, "WT_me3_unique_peaks.bed"),
                    A7_me3_peaks = paste0(dir, "a7_me3_specific_peaks.bed"),
-                   C9_me3_peaks = paste0(dir, "a7_me3_specific_peaks.bed"))
+                   C9_me3_peaks = paste0(dir, "c9_me3_specific_peaks.bed"))
 #Annotate peaks for each condition and save files
 annotated_peaks_WT_me3 <- annotate_peaks(peak_files, "WT_me3_peaks") 
 annotated_peaks_A7_me3 <- annotate_peaks(peak_files, "A7_me3_peaks")
