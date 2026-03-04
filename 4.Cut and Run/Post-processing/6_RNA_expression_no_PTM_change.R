@@ -51,11 +51,12 @@ ub_gained_clones$geneID <- as.character(ub_gained_clones$geneID)
 upregulated_genes_clones <- normalised_expression_wt_vs_clones %>%
   dplyr::filter(logFC >= 0.5) %>%
   dplyr::filter(adj.P.Val <= 0.1)
+write.csv(upregulated_genes_clones, file = "path\\upregulated_genes_clones.csv")
 
 downregulated_genes_clones <- normalised_expression_wt_vs_clones %>%
   dplyr::filter(logFC <= -0.5) %>%
   dplyr::filter(adj.P.Val <= 0.1)
-
+write.csv(downregulated_genes_clones, file = "path\\downregulated_genes_clones.csv")
 
 upreg_genes_with_me3_wt <- upregulated_genes_clones %>%
   inner_join(RPKM_me3_avg, by = "geneID") %>%
