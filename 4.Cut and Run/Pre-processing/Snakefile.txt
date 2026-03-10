@@ -7,8 +7,8 @@ configfile: "config.yaml"
 samples = pd.read_csv(config["samples"], sep = '\t').set_index("sample_id", drop=False)
 SAMPLE_NAMES = samples['sample_id'].tolist()
 
-conditions = ["C5", "C9", "WT"]
-marks = ["me3", "ac"]
+conditions = ["A7", "C9", "WT"]
+marks = ["me3", "ac", "ub"]
 replicates = ["1", "2"]
 
 
