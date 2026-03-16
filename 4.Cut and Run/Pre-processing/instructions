@@ -1,0 +1,4 @@
+#For the Snakefile:
+#Raw data needs to all be named like the data in metadata.txt and they need to be in a folder called fastq
+#for the Snakefile to run, create_outputs.smk and all the rules below spikein need to be hashed out
+#spikein is hashed out because it did not work in this case; increasing DNA concentration is an option to be looked into 
