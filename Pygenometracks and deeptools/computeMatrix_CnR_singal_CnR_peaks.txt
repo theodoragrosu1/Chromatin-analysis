@@ -1,0 +1,154 @@
+computeMatrix reference-point -S ./normalised_bigwigs/WT_me3_log2.bigwig ./normalised_bigwigs/A7_me3_log2.bigwig ./normalised_bigwigs/C9_me3_log2.bigwig \
+    --referencePoint center -R ./macs2_peaks/H3K27me3/WT_me3_peaks.bed ./macs2_peaks/H3K27me3/A7_me3_peaks.bed ./macs2_peaks/H3K27me3/C9_me3_peaks.bed \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_me3_signal_me3_peaks_cut_run.mat.gz
+
+
+plotHeatmap -m ./heatmaps/heatmap_me3_signal_me3_peaks_cut_run.mat.gz \
+    -out ./heatmaps/plots/heatmap_me3_signal_me3_peaks_cut_run.pdf \
+    --refPointLabel=Peak \
+    --samplesLabel "WT H3K27me3" "A7 H3K27me3" "C9 H3K27me3"  \
+    --regionsLabel "WT H3K27me3" "A7 H3K27me3" "C9 H3K27me3" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Greens Greens Greens \
+    --zMin 0 \
+    --zMax 0.5 0.5 0.5 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=16
+
+
+
+computeMatrix reference-point -S ./normalised_bigwigs/WT_ac_log2.bigwig ./normalised_bigwigs/A7_ac_log2.bigwig ./normalised_bigwigs/C9_ac_log2.bigwig \
+    --referencePoint center -R ./macs2_peaks/H3K27ac/WT_ac_peaks.bed ./macs2_peaks/H3K27ac/A7_ac_peaks.bed ./macs2_peaks/H3K27ac/C9_ac_peaks.bed \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_ac_signal_ac_peaks_cut_run.mat.gz
+
+
+plotHeatmap -m ./heatmaps/heatmap_ac_signal_ac_peaks_cut_run.mat.gz \
+    -out ./heatmaps/plots/heatmap_ac_signal_ac_peaks_cut_run.pdf \
+    --refPointLabel=Peak \
+    --samplesLabel "WT H3K27ac" "A7 H3K27ac" "C9 H3K27ac"  \
+    --regionsLabel "WT H3K27ac" "A7 H3K27ac" "C9 H3K27ac" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Blues \
+    --zMin 0 \
+    --zMax 0.3  \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=10
+
+computeMatrix reference-point -S ./normalised_bigwigs/WT_ub_log2.bigwig ./normalised_bigwigs/A7_ub_log2.bigwig ./normalised_bigwigs/C9_ub_log2.bigwig \
+    --referencePoint center -R ./macs2_peaks/H2AK119ub/WT_ub_peaks.bed ./macs2_peaks/H2AK119ub/A7_ub_peaks.bed ./macs2_peaks/H2AK119ub/C9_ub_peaks.bed \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_ub_signal_ub_peaks_cut_run.mat.gz
+
+
+plotHeatmap -m ./heatmaps/heatmap_ub_signal_ub_peaks_cut_run.mat.gz \
+    -out ./heatmaps/plots/heatmap_ub_signal_ub_peaks_cut_run.pdf \
+    --refPointLabel=Peak \
+    --samplesLabel "WT H2AK119ub" "A7 H2AK119ub" "C9 H2AK119ub"  \
+    --regionsLabel "WT H2AK119ub" "A7 H2AK119ub" "C9 H2AK119ub" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Purples Purples Purples \
+    --zMin 0 \
+    --zMax 0.1 0.1 0.1 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=10
+
+
+computeMatrix reference-point -S ./normalised_bigwigs/WT_SUZ12_log2.bigwig ./normalised_bigwigs/A7_SUZ12_log2.bigwig ./normalised_bigwigs/C9_SUZ12_log2.bigwig \
+    --referencePoint center -R ./cutrun_peaks/SUZ12//WT_SUZ12_peaks_filtered.bed ./cutrun_peaks/SUZ12/A7_SUZ12_peaks_filtered.bed ./cutrun_peaks/SUZ12/C9_SUZ12_peaks_filtered.bed \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_SUZ12_signal_SUZ12_peaks_cut_run.mat.gz
+
+
+plotHeatmap -m ./heatmaps/heatmap_SUZ12_signal_SUZ12_peaks_cut_run.mat.gz \
+    -out ./heatmaps/plots/heatmap_SUZ12_signal_SUZ12_peaks_cut_run.pdf \
+    --refPointLabel=Peak \
+    --samplesLabel "WT SUZ12" "A7 SUZ12" "C9 SUZ12"  \
+    --regionsLabel "WT SUZ12" "A7 SUZ12" "C9 SUZ12" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap spring \
+    --zMin 0 \
+    --zMax 0.03 0.03 0.03 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=10
+
+computeMatrix reference-point -S ./normalised_bigwigs/WT_EZH1_log2.bigwig ./normalised_bigwigs/A7_EZH1_log2.bigwig ./normalised_bigwigs/C9_EZH1_log2.bigwig \
+    --referencePoint center -R ./cutrun_peaks/EZH1/WT_EZH1_peaks_filtered.bed ./cutrun_peaks/EZH1/A7_EZH1_peaks_filtered.bed ./cutrun_peaks/EZH1/C9_EZH1_peaks_filtered.bed \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_EZH1_signal_EZH1_peaks_cut_run.mat.gz
+
+
+plotHeatmap -m ./heatmaps/heatmap_EZH1_signal_EZH1_peaks_cut_run.mat.gz \
+    -out ./heatmaps/plots/heatmap_EZH1_signal_EZH1_peaks_cut_run.pdf \
+    --refPointLabel=Peak \
+    --samplesLabel "WT EZH1" "A7 EZH1" "C9 EZH1"  \
+    --regionsLabel "WT EZH1" "A7 EZH1" "C9 EZH1" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Reds \
+    --zMin 0 \
+    --zMax 0.03 0.03 0.03 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=10
+
+
+computeMatrix reference-point -S ./ETP-ALL_chapter/ATAC-peaks/open_fragments/WT.open.fragments.bigwig ./ETP-ALL_chapter/ATAC-peaks/open_fragments/A7.open.fragments.bigwig ./ETP-ALL_chapter/ATAC-peaks/open_fragments/C9.open.fragments.bigwig \
+    --referencePoint center -R ./ETP-ALL_chapter/ATAC-peaks/homer_input/Jurkat_WT_peaks.bed ./ETP-ALL_chapter/ATAC-peaks/homer_input/Jurkat_A7_peaks.bed ./ETP-ALL_chapter/ATAC-peaks/homer_input/Jurkat_C9_peaks.bed\
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_atac_signal_atac_peaks.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_atac_signal_atac_peaks.mat.gz \
+    -out ./heatmaps/plots/heatmap_atac_signal_atac_peaks.pdf \
+    --refPointLabel=Peak \
+    --samplesLabel "WT open" "A7 open" "C9 open"  \
+    --regionsLabel "WT open" "A7 open" "C9 open" \
+    --missingDataColor=1 \
+    --legendLocation none \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Oranges \
+    --zMin 0 \
+    --zMax 20 20 20 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=10
+
+
