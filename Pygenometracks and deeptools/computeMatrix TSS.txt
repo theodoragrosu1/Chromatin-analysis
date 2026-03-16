@@ -1,0 +1,151 @@
+computeMatrix reference-point -S ./bigwigs/WT_me3.bigwig  \
+    --referencePoint TSS -R ./public_datasets/genome_files/hg38.knownGene.gtf \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_tss_me3_cut_run.mat.gz
+
+
+plotHeatmap -m ./heatmaps/heatmap_tss_me3_cut_run.mat.gz \
+    -out ./heatmaps/plots/heatmap_tss_me3_cut_run.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT H3K27me3"  \
+    --regionsLabel Genes \
+    --missingDataColor=1 \
+    --legendLocation none \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Greens  \
+    --zMin 0 \
+    --zMax 0.08  \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=10
+
+
+
+computeMatrix reference-point -S ./bigwigs/WT_ac.bigwig ./bigwigs/A7_ac.bigwig ./bigwigs/C9_ac_deduped.bigwig \
+    --referencePoint TSS -R ./public_datasets/genome_files/hg38.knownGene.gtf \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_tss_ac_cut_run.mat.gz
+
+
+plotHeatmap -m ./heatmaps/heatmap_tss_ac_cut_run.mat.gz \
+    -out ./heatmaps/plots/heatmap_tss_ac_cut_run.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT H3K27ac" "A7 H3K27ac" "C9 H3K27ac"  \
+    --regionsLabel Genes \
+    --missingDataColor=1 \
+    --legendLocation none \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Blues Blues Blues \
+    --zMin 0 \
+    --zMax 0.4 0.4 0.4 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=10
+
+
+computeMatrix reference-point -S ./bigwigs/WT_ub.bigwig ./bigwigs/A7_ub.bigwig ./bigwigs/C9_ub.bigwig \
+    --referencePoint TSS -R ./public_datasets/genome_files/hg38.knownGene.gtf \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_tss_ub_cut_run.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_tss_ub_cut_run.mat.gz \
+    -out ./heatmaps/plots/heatmap_tss_ub_cut_run.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT H2AK119ub" "A7 H2AK119ub" "C9 H2AK119ub"  \
+    --regionsLabel Genes \
+    --missingDataColor=1 \
+    --legendLocation none \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Purples Purples Purples \
+    --zMin 0 \
+    --zMax 0.08  \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=10
+
+computeMatrix reference-point -S ./bigwigs/WT_SUZ12.bigwig ./bigwigs/A7_SUZ12.bigwig ./bigwigs/C9_SUZ12.bigwig \
+    --referencePoint TSS -R ./public_datasets/genome_files/hg38.knownGene.gtf \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_tss_SUZ12_cut_run.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_tss_SUZ12_cut_run.mat.gz \
+    -out ./heatmaps/plots/heatmap_tss_SUZ12_cut_run.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT SUZ12" "A7 SUZ12" "C9 SUZ12"  \
+    --regionsLabel Genes \
+    --missingDataColor=1 \
+    --legendLocation none \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Greys \
+    --zMin 0 \
+    --zMax 0.1 0.1 0.1 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=10
+
+computeMatrix reference-point -S ./bigwigs/WT_EZH1.bigwig ./bigwigs/A7_EZH1.bigwig ./bigwigs/C9_EZH1.bigwig \
+    --referencePoint TSS -R ./public_datasets/genome_files/hg38.knownGene.gtf \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_tss_EZH1_cut_run.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_tss_EZH1_cut_run.mat.gz \
+    -out ./heatmaps/plots/heatmap_tss_EZH1_cut_run.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT EZH1" "A7 EZH1" "C9 EZH1"  \
+    --regionsLabel Genes \
+    --missingDataColor=1 \
+    --legendLocation none \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Reds \
+    --zMin 0 \
+    --zMax 0.1 0.1 0.1 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=10
+
+
+computeMatrix reference-point -S ./ETP-ALL_chapter/ATAC-peaks/open_fragments/WT.open.fragments.bigwig ./ETP-ALL_chapter/ATAC-peaks/open_fragments/A7.open.fragments.bigwig ./ETP-ALL_chapter/ATAC-peaks/open_fragments/C9.open.fragments.bigwig \
+    --referencePoint TSS -R ./public_datasets/genome_files/hg38.knownGene.gtf \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_tss_atac_peaks.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_tss_atac_peaks.mat.gz \
+    -out ./heatmaps/plots/heatmap_tss_atac_peaks.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT open" "A7 open" "C9 open"  \
+    --regionsLabel Genes \
+    --missingDataColor=1 \
+    --legendLocation none \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Oranges \
+    --zMin 0 \
+    --zMax 60 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=10
+
+
