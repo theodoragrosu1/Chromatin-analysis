@@ -41,7 +41,7 @@ peak_info <- counts_raw[keep, 1:6]
 write.table(cpm_filtered, "path\\ATAC-peaks\\homer_input\\peak_counts_cpm_log2_filtered.txt", sep="\t", quote=FALSE, col.names=NA)
 write.table(peak_info, "path\\ATAC-peaks\\homer_input\\peak_coordinates_filtered.txt", sep="\t", quote=FALSE, row.names=FALSE)
 
-#Filter the top 5000 genes because MOFA could become unstable otherwise; we have over 13000 in the bgeinning
+#Filter the top 2000 genes because MOFA could become unstable otherwise; we have over 13000 in the bgeinning
 gene_var <- apply(rna_normalised_avg,1,var)
 rna_top <- rna_normalised_avg[order(gene_var, decreasing=TRUE)[1:2000], ]
 
