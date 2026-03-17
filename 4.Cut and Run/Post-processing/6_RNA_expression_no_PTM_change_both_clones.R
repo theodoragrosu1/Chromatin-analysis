@@ -9,11 +9,11 @@ library(ggplot2)
 library(colorspace)
 
 #this code imports RPKM normalized Cut and Run and sees which DEGs cannot be explained by changes in PTMs
-RPKM_me3 <- read.csv("path\\me3_rpkm.csv") %>%
+RPKM_me3 <- read.csv("path\\macs2_peaks\\H3K27me3\\contrasts\\me3_rpkm.csv") %>%
   drop_na()
-RPKM_ac <- read.csv("path\\ac_rpkm.csv") %>%
+RPKM_ac <- read.csv("path\\macs2_peaks\\H3K27ac\\contrasts\\ac_rpkm.csv") %>%
   drop_na()
-RPKM_ub <- read.csv("path\\ub_rpkm.csv") %>%
+RPKM_ub <- read.csv("path\\macs2_peaks\\H2AK119ub\\contrasts\\ub_rpkm.csv") %>%
   drop_na()
 
 RPKM_me3_avg <- RPKM_me3%>%
@@ -50,13 +50,12 @@ ub_gained_clones$geneID <- as.character(ub_gained_clones$geneID)
 
 upregulated_genes_clones <- normalised_expression_wt_vs_clones %>%
   dplyr::filter(logFC >= 0.5) %>%
-  dplyr::filter(adj.P.Val <= 0.1)
-write.csv(upregulated_genes_clones, file = "path\\upregulated_genes_clones.csv")
+  dplyr::filter(adj.P.Val <= 0.2)
 
 downregulated_genes_clones <- normalised_expression_wt_vs_clones %>%
   dplyr::filter(logFC <= -0.5) %>%
-  dplyr::filter(adj.P.Val <= 0.1)
-write.csv(downregulated_genes_clones, file = "path\\downregulated_genes_clones.csv")
+  dplyr::filter(adj.P.Val <= 0.2)
+
 
 upreg_genes_with_me3_wt <- upregulated_genes_clones %>%
   inner_join(RPKM_me3_avg, by = "geneID") %>%

@@ -1,0 +1,77 @@
+# 1. ATAC only (no SUZ12, no H3K27me3)
+bedtools intersect -a ./ETP-ALL_chapter/ATAC-peaks/WT_ATAC_peaks.bed -b ./cutrun_peaks/SUZ12/WT_SUZ12_peaks_filtered.bed -v | \
+bedtools intersect -a - -b ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -v > ./peaks/WT_ATAC_only.bed
+
+# 2. ATAC + SUZ12 only (no H3K27me3)
+bedtools intersect -a ./ETP-ALL_chapter/ATAC-peaks/WT_ATAC_peaks.bed -b ./cutrun_peaks/SUZ12/WT_SUZ12_peaks_filtered.bed -u | \
+bedtools intersect -a - -b ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -v > ./peaks/WT_ATAC_SUZ12.bed
+
+# 3. ATAC + H3K27me3 only (no SUZ12)
+bedtools intersect -a ./ETP-ALL_chapter/ATAC-peaks/WT_ATAC_peaks.bed  -b ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -u | \
+bedtools intersect -a - -b ./cutrun_peaks/SUZ12/WT_SUZ12_peaks_filtered.bed -v > ./peaks/WT_ATAC_H3K27me3.bed
+
+# 4. All three overlap (ATAC + SUZ12 + H3K27me3)
+bedtools intersect -a ./ETP-ALL_chapter/ATAC-peaks/WT_ATAC_peaks.bed -b ./cutrun_peaks/SUZ12/WT_SUZ12_peaks_filtered.bed -u | \
+bedtools intersect -a - -b ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -u > ./peaks/WT_ATAC_SUZ12_H3K27me3.bed
+
+# 5. SUZ12 + H3K27me3 only (no ATAC)
+bedtools intersect -a ./cutrun_peaks/SUZ12/WT_SUZ12_peaks_filtered.bed -b ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -u | \
+bedtools intersect -a - -b ./ETP-ALL_chapter/ATAC-peaks/WT_ATAC_peaks.bed -v > ./peaks/WT_SUZ12_H3K27me3.bed
+
+wc -l ./peaks/WT_ATAC_only.bed ./peaks/WT_ATAC_SUZ12.bed ./peaks/WT_ATAC_H3K27me3.bed \
+       ./peaks/WT_ATAC_SUZ12_H3K27me3.bed ./peaks/WT_ATAC_SUZ12_H3K27me3.bed
+
+bedtools intersect -a ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -b ./macs2_peaks/H3K27me3/A7_me3_peaks.bed -v | \
+bedtools intersect -a - -b ./macs2_peaks/H3K27me3/C9_me3_peaks.bed -v > ./peaks/H3K27me3_lost_both_clones.bed
+
+# Peaks retained in BOTH KO clones
+bedtools intersect -a ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -b ./macs2_peaks/H3K27me3/A7_me3_peaks.bed -u | \
+bedtools intersect -a - -b ./macs2_peaks/H3K27me3/C9_me3_peaks.bed-u > ./peaks/H3K27me3_retained_both_clones.bed
+
+# Peaks gained in BOTH KO clones
+bedtools intersect -a ./macs2_peaks/H3K27me3/A7_me3_peaks.bed -b ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -v | \
+bedtools intersect -a - -b ./macs2_peaks/H3K27me3/C9_me3_peaks.bed -u > ./peaks/H3K27me3_gained_both_clones.bed
+
+
+# A7 categories
+bedtools intersect -a ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -b ./macs2_peaks/H3K27me3/A7_me3_peaks.bed -v > ./peaks/H3K27me3_lost_A7.bed
+bedtools intersect -a ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -b ./macs2_peaks/H3K27me3/A7_me3_peaks.bed -u > ./peaks/H3K27me3_retained_A7.bed
+bedtools intersect -a ./macs2_peaks/H3K27me3/A7_me3_peaks.bed -b ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -v > ./peaks/H3K27me3_gained_A7.bed
+
+# C9 categories
+bedtools intersect -a ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -b ./macs2_peaks/H3K27me3/C9_me3_peaks.bed -v > ./peaks/H3K27me3_lost_C9.bed
+bedtools intersect -a ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -b ./macs2_peaks/H3K27me3/C9_me3_peaks.bed -u > ./peaks/H3K27me3_retained_C9.bed
+bedtools intersect -a ./macs2_peaks/H3K27me3/C9_me3_peaks.bed -b ./macs2_peaks/H3K27me3/WT_me3_peaks.bed -v > ./peaks/H3K27me3_gained_C9.bed
+
+# Check counts
+wc -l ./peaks/H3K27me3_lost_A7.bed ./peaks/H3K27me3_retained_A7.bed ./peaks/H3K27me3_gained_A7.bed \
+       ./peaks/H3K27me3_lost_C9.bed ./peaks/H3K27me3_retained_C9.bed ./peaks/H3K27me3_gained_C9.bed
+
+
+#to generate peak files where H3K27ac replaces WT H3K27me3, we need to first determine the overlapping peaks then make sure that that region is indeed lost in A7 H3K27me3
+bedtools intersect \
+  -a ./macs2_peaks/H3K27ac/A7_ac_peaks.bed \
+  -b ./macs2_peaks/H3K27me3/WT_me3_peaks.bed \
+  -u \
+  -f 0.25 \
+  > ./peaks/H3K27ac_A7_overlapping_WT_H3K27me3.bed
+
+bedtools intersect \
+  -a ./peaks/H3K27ac_A7_overlapping_WT_H3K27me3.bed \
+  -b ./macs2_peaks/H3K27me3/A7_me3_peaks.bed \
+  -v \
+  > ./peaks/H3K27ac_replaces_H3K27me3_A7.bed
+
+
+bedtools intersect \
+  -a ./macs2_peaks/H3K27ac/C9_ac_peaks.bed \
+  -b ./macs2_peaks/H3K27me3/WT_me3_peaks.bed \
+  -u \
+  -f 0.25 \
+  > ./peaks/H3K27ac_C9_overlapping_WT_H3K27me3.bed
+
+bedtools intersect \
+  -a ./peaks/H3K27ac_C9_overlapping_WT_H3K27me3.bed \
+  -b ./macs2_peaks/H3K27me3/C9_me3_peaks.bed \
+  -v \
+  > ./peaks/H3K27ac_replaces_H3K27me3_C9.bed

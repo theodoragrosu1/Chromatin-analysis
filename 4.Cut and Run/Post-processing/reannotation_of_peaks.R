@@ -1,6 +1,3 @@
-#input files: unique WT peaks as given by 1_upset_overlaps_me3.R and then A7 and C9 peaks that also include the overlap between themselves, to not miss out on any shared peaks
-#output files: annotated peaks for all conditions
-
 library(dplyr)
 library(ChIPseeker)
 library(EnsDb.Hsapiens.v86)
@@ -25,7 +22,7 @@ edb <- EnsDb.Hsapiens.v86
 seqlevelsStyle(edb) <- "UCSC"
 txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
 
-dir <- ".\\macs2_peaks\\H3K27me3\\contrasts\\"
+dir <- "path\\macs2_peaks\\H3K27me3\\contrasts\\"
 
 #load peak files
 peak_files <- list(WT_me3_peaks = paste0(dir, "WT_me3_unique_peaks.bed"),
@@ -37,7 +34,7 @@ annotated_peaks_A7_me3 <- annotate_peaks(peak_files, "A7_me3_peaks")
 annotated_peaks_C9_me3 <- annotate_peaks(peak_files, "C9_me3_peaks")
 
 
-dir_ac <- ".\\macs2_peaks\\H3K27ac\\contrasts\\"
+dir_ac <- "path\\macs2_peaks\\H3K27ac\\contrasts\\"
 
 #load peak files
 peak_files <- list(WT_ac_peaks = paste0(dir_ac, "WT_ac_unique_peaks.bed"),
@@ -49,7 +46,7 @@ annotated_peaks_A7_ac <- annotate_peaks(peak_files, "A7_ac_peaks")
 annotated_peaks_C9_ac <- annotate_peaks(peak_files, "C9_ac_peaks")
 
 
-dir_ub <- ".\\macs2_peaks\\H2AK119ub\\contrasts\\"
+dir_ub <- "path\\macs2_peaks\\H2AK119ub\\contrasts\\"
 #load peak files
 peak_files <- list(WT_ub_peaks = paste0(dir_ub, "WT_ub_unique_peaks.bed"),
                    A7_ub_peaks = paste0(dir_ub, "a7_ub_specfic_peaks.bed"),
@@ -60,6 +57,13 @@ annotated_peaks_A7_ub <- annotate_peaks(peak_files, "A7_ub_peaks")
 annotated_peaks_C9_ub <- annotate_peaks(peak_files, "C9_ub_peaks")
 
 
+###load ATAC peaks
+WT_ATAC_peaks <- read.csv("path\\ETP-ALL_chapter\\ATAC-peaks\\WT_unique_atac.csv") %>%
+  na.omit
+A7_ATAC_peaks <- read.csv("path\\ETP-ALL_chapter\\ATAC-peaks\\A7_unique_atac.csv") %>%
+  na.omit
+C9_ATAC_peaks <- read.csv("path\\ETP-ALL_chapter\\ATAC-peaks\\C9_unique_atac.csv") %>%
+  na.omit
 
 
 

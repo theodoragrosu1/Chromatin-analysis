@@ -1,13 +1,10 @@
-#input files: MACS2 peak files that have only chr name, start, and end (first 3 columns, MACS2 outputs more)
-#output files: unique peaks in every condition (WT, A7, and C9) and also overlaps between the conditions
-
 library(hicVennDiagram)
 library(GenomicInteractions)
 library(ComplexUpset)
 library(tidyverse)
 library(ChIPseeker)
 
-fs <- dir(".\\macs2_peaks\\H3K27me3\\", 
+fs <- dir("C:\\Users\\tgrosu\\OneDrive\\Desktop\\macs2_peaks\\H3K27me3\\", 
           pattern = "*_peaks.bed", full.names = TRUE)
 
 
@@ -72,26 +69,26 @@ a7_c9_me3_overlap_peaks <- venn$overlapList[["110"]][["A7_me3_peaks.bed"]] %>%
   as.data.frame() %>%
   dplyr::select(c("seqnames", "start", "end"))
 
-dir.create(".\\macs2_peaks\\H3K27me3\\contrasts\\")
-write.table(wt_me3_unique_peaks, file = ".\\macs2_peaks\\H3K27me3\\contrasts\\WT_me3_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-write.table(a7_me3_unique_peaks, file = ".\\macs2_peaks\\H3K27me3\\contrasts\\A7_me3_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-write.table(c9_me3_unique_peaks, file = ".\\macs2_peaks\\H3K27me3\\contrasts\\C9_me3_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-write.table(wt_a7_c9_me3_overlap_peaks, file = ".\\macs2_peaks\\H3K27me3\\contrasts\\wt_a7_c9_me3_overlap_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-write.table(a7_c9_me3_overlap_peaks, file = ".\\macs2_peaks\\H3K27me3\\contrasts\\a7_c9_me3_overlap_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+dir.create("C:\\Users\\tgrosu\\OneDrive\\Desktop\\macs2_peaks\\H3K27me3\\contrasts\\")
+write.table(wt_me3_unique_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\macs2_peaks\\H3K27me3\\contrasts\\WT_me3_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+write.table(a7_me3_unique_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\macs2_peaks\\H3K27me3\\contrasts\\A7_me3_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+write.table(c9_me3_unique_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\macs2_peaks\\H3K27me3\\contrasts\\C9_me3_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+write.table(wt_a7_c9_me3_overlap_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\macs2_peaks\\H3K27me3\\contrasts\\wt_a7_c9_me3_overlap_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+write.table(a7_c9_me3_overlap_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\macs2_peaks\\H3K27me3\\contrasts\\a7_c9_me3_overlap_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
 rbind(a7_me3_unique_peaks, c9_me3_unique_peaks) %>%
   rbind(a7_c9_me3_overlap_peaks) %>%
-  write.table(file = ".\macs2_peaks\\H3K27me3\\contrasts\\a7_c9_me3_union_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\macs2_peaks\\H3K27me3\\contrasts\\a7_c9_me3_union_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
 rbind(a7_me3_unique_peaks, a7_c9_me3_overlap_peaks) %>%
-  write.table(file = ".\\macs2_peaks\\H3K27me3\\contrasts\\a7_me3_specific_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\macs2_peaks\\H3K27me3\\contrasts\\a7_me3_specific_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
 rbind(c9_me3_unique_peaks, a7_c9_me3_overlap_peaks) %>%
-  write.table(file = ".\\macs2_peaks\\H3K27me3\\contrasts\\c9_me3_specific_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\macs2_peaks\\H3K27me3\\contrasts\\c9_me3_specific_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
 
 rbind(wt_me3_unique_peaks, a7_me3_unique_peaks) %>%
   rbind(c9_me3_unique_peaks) %>%
   rbind(a7_c9_me3_overlap_peaks) %>%
   rbind(wt_a7_c9_me3_overlap_peaks) %>%
-  write.table(file = ".\\macs2_peaks\\H3K27me3\\contrasts\\all_me3_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\macs2_peaks\\H3K27me3\\contrasts\\all_me3_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)

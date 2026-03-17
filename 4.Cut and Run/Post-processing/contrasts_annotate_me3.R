@@ -1,7 +1,3 @@
-#input files: peak files from upset_overlaps_me3.R since we have both unique peaks but also the overlapped peaks
-#output files: .csv file with genomic annotation of the peaks in every condition for downstream analyses
-#output files: Venn diagrams for intersect between Cut and run peaks, and also ATAC peaks
-
 library(ChIPseeker)
 library(EnsDb.Hsapiens.v86)
 library(TxDb.Hsapiens.UCSC.hg38.knownGene)
@@ -25,7 +21,7 @@ edb <- EnsDb.Hsapiens.v86
 seqlevelsStyle(edb) <- "UCSC"
 txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
 
-dir <- ".\\macs2_peaks\\H3K27me3\\contrasts\\"
+dir <- "path\\macs2_peaks\\H3K27me3\\contrasts\\"
 
 #load peak files
 peak_files <- list(A7_C9_common_me3 = paste0(dir, "A7_c9_me3_overlap_peaks.bed"),
@@ -33,6 +29,7 @@ peak_files <- list(A7_C9_common_me3 = paste0(dir, "A7_c9_me3_overlap_peaks.bed")
                    A7_unique_me3 = paste0(dir, "A7_me3_unique_peaks.bed"),
                    C9_unique_me3 = paste0(dir, "C9_me3_unique_peaks.bed"), 
                    WT_A7_C9_overlap_me3 = paste0(dir, "wt_A7_c9_me3_overlap_peaks.bed"),
+                   WT_me3_clones_background = paste0(dir, "WT_me3_clones_background_peaks.bed"),
                    all_me3_peaks = paste0(dir, "all_me3_peaks.bed"))
 
 
@@ -42,21 +39,26 @@ annotated_peaks_A7_unique_me3 <- annotate_peaks(peak_files, "A7_unique_me3")
 annotated_peaks_C9_unique_me3 <- annotate_peaks(peak_files, "C9_unique_me3")
 annotated_peaks_A7_C9_common_me3 <- annotate_peaks(peak_files, "A7_C9_common_me3") 
 annotated_peaks_WT_A7_C9_overlap_me3 <- annotate_peaks(peak_files, "WT_A7_C9_overlap_me3")
+annotated_peaks_WT_me3_clones_background <- annotate_peaks(peak_files, "WT_me3_clones_background")
 annotated_all_me3_peaks <- annotate_peaks(peak_files, "all_me3_peaks")
 
-dir.create(".\\macs2_peaks\\H3K27me3\\contrasts\\annotated_peaks")
+dir.create("path\\macs2_peaks\\H3K27me3\\contrasts\\annotated_peaks")
 
 write.csv(annotated_peaks_WT_unique_me3, file = paste0(dir, ".\\annotated_peaks\\WT_unique_me3.csv"), quote = FALSE, row.names = FALSE)
 write.csv(annotated_peaks_A7_unique_me3, file = paste0(dir, ".\\annotated_peaks\\A7_unique_me3.csv"), quote = FALSE, row.names = FALSE)
 write.csv(annotated_peaks_C9_unique_me3, file = paste0(dir, ".\\annotated_peaks\\C9_unique_me3.csv"), quote = FALSE, row.names = FALSE)
 write.csv(annotated_peaks_A7_C9_common_me3, file = paste0(dir, ".\\annotated_peaks\\A7_C9_common_me3.csv"), quote = FALSE, row.names = FALSE)
 write.csv(annotated_peaks_WT_A7_C9_overlap_me3, file = paste0(dir, ".\\annotated_peaks\\WT_A7_C9_overlap_me3.csv"), quote = FALSE, row.names = FALSE)
+write.csv(annotated_peaks_WT_me3_clones_background, file = paste0(dir, ".\\annotated_peaks\\WT_me3_clones_background.csv"), quote = FALSE, row.names = FALSE)
 write.csv(annotated_all_me3_peaks, file = paste0(dir, ".\\annotated_peaks\\annotated_all_me3.csv"), quote = FALSE, row.names = FALSE)
 
 
 #Count number of peaks in each type of annotation for H3K27me3 peaks
 WT_unique_me3_summary <- as.data.frame(table(annotated_peaks_WT_unique_me3$annotation))
 colnames(WT_unique_me3_summary) <- c("Annotation", "WT_unique_me3")
+
+WT_me3_clones_background_summary <- as.data.frame(table(annotated_peaks_WT_me3_clones_background$annotation))
+colnames(WT_me3_clones_background_summary) <- c("Annotation", "WT_me3_clones_background")
 
 A7_unique_me3_summary <- as.data.frame(table(annotated_peaks_A7_unique_me3$annotation))
 colnames(A7_unique_me3_summary) <- c("Annotation", "A7_unique_me3")
@@ -72,6 +74,7 @@ colnames(WT_A7_C9_overlap_me3_summary) <- c("Annotation", "WT_A7_C9_overlap_me3"
 
 summary_annotation_me3 <- left_join(WT_unique_me3_summary, A7_unique_me3_summary, by = "Annotation") %>%
   left_join(C9_unique_me3_summary, by = "Annotation") %>%
+  left_join(WT_me3_clones_background_summary, by = "Annotation") %>%
   #left_join(A7_C9_common_me3_summary, by = "Annotation") %>%
   #left_join(WT_A7_C9_overlap_me3_summary, by = "Annotation") %>%
   pivot_longer(cols = -Annotation, names_to = "Condition", values_to = "value") %>%
@@ -85,7 +88,7 @@ summary_annotation_me3$Annotation <- factor(summary_annotation_me3$Annotation,
 
 summary_annotation_me3$Condition <- factor(summary_annotation_me3$Condition, 
                                           levels = c(#"WT_A7_C9_overlap_me3", "A7_C9_common_me3", 
-                                                     "C9_unique_me3", "A7_unique_me3", "WT_unique_me3"))
+                                                     "C9_unique_me3", "A7_unique_me3", "WT_unique_me3", "WT_me3_clones_background"))
 
 #plot
 annotated_me3_peaks_plot <- summary_annotation_me3 %>%
@@ -97,7 +100,7 @@ annotated_me3_peaks_plot <- summary_annotation_me3 %>%
                                "#FEB95F", "#CC79A7"), guide = guide_legend(reverse = TRUE)) +
   theme_classic(base_size = 26) +
   coord_flip() +
-  scale_y_continuous(labels = scales::comma, limits = c(0, 60000)) +  #change the limits based on the larger category for the x-axis
+  scale_y_continuous(labels = scales::comma, limits = c(0, 60000)) +
   labs(x = "Sample") +
   ylab("No. H3K27me3 peaks")
 
@@ -164,10 +167,10 @@ ggsave(dir, filename = ".\\annotated_peaks\\annotated_constrast_me3_peaks_percen
        plot = annotated_peaks_plot_perc, 
        width = 38, height = 13, dpi = 800, units = "cm", device = cairo_pdf)
 
-#annotate all peaks found in the 3 cell lines to see if there are any peaks in promoter regions that overlap and to get Venn diagrams
-dir1 <- ".\\macs2_peaks\\H3K27me3\\"
-dir2 <- ".\\macs2_peaks\\H2AK119ub\\"
-dir3 <- ".\\macs2_peaks\\H3K27ac\\"
+#annotate all peaks found in the 3 cell lines to see if there are any peaks in promoter regions that overlap and to get nice Venn diagrams
+dir1 <- "path\\macs2_peaks\\H3K27me3\\"
+dir2 <- "path\\macs2_peaks\\H2AK119ub\\"
+dir3 <- "path\\macs2_peaks\\H3K27ac\\"
 
 #load peak files
 peak_files <- list(WT_all_me3 = paste0(dir1, "WT_me3_peaks.bed"),
@@ -264,21 +267,21 @@ venn.diagram(list("WT H3K27me3\n promoters" = WT_me3_promoters,
                   "C9 H3K27me3\n promoters" = C9_me3_promoters),
              lwd = 0, cex = 3, cat.cex = 1.6, print.mode = "raw", margin = 0.1,
              alpha = c(0.5, 0.5, 0.5), fill = c("#173518", "#2e6930", "#449e48"),
-             ".\\H3K27me3_overlaps.png", disable.logging = TRUE)
+             "path\\H3K27me3_overlaps.png", disable.logging = TRUE)
 
 venn.diagram(list("WT H2AK119ub\n promoters" = WT_ub_promoters,
                   "A7 H2AK119ub\n promoters" = A7_ub_promoters,
                   "C9 H2AK119ub\n promoters" = C9_ub_promoters),
              lwd = 0, cex = 3, cat.cex = 1.6, print.mode = "raw", margin = 0.1,
              alpha = c(0.5, 0.5, 0.5), fill = c("#4a2574", "#924ed1", "#bc83bd"),
-             ".\\H2AK119ub_promoters_overlaps.png", disable.logging = TRUE)
+             "path\\H2AK119ub_promoters_overlaps.png", disable.logging = TRUE)
 
 
 venn.diagram(list("WT H3K27me3\n promoters" = WT_me3_promoters,
                   "WT H2AK119ub\n promoters" = WT_ub_promoters),
              lwd = 0, cex = 2, cat.cex = 1.6, print.mode = "raw", margin = 0.1,
              alpha = c(0.5, 0.5), fill = c("#173518", "#4a2574"),
-             ".\\WT_H3K27me3_H2AK119ub_promoters_overlaps.png", disable.logging = TRUE)
+             "path\\WT_H3K27me3_H2AK119ub_promoters_overlaps.png", disable.logging = TRUE)
 
 
 venn.diagram(list("WT H3K27ac\n promoters" = WT_ac_promoters,
@@ -286,22 +289,22 @@ venn.diagram(list("WT H3K27ac\n promoters" = WT_ac_promoters,
                   "C9 H3K27ac\n promoters" = C9_ac_promoters),
              lwd = 0, cex = 3, cat.cex = 1.6, print.mode = "raw", margin = 0.1,
              alpha = c(0.5, 0.5, 0.5), fill = c("#0D47A1", "#42A5F5", "#4FC3F7"),
-             ".\H3K27ac_promoters_overlaps.png", disable.logging = TRUE)
+             "path\\H3K27ac_promoters_overlaps.png", disable.logging = TRUE)
 
 
 
-WT_ATAC_peaks <- read.csv(".\\ATAC-peaks\\WT_unique_atac.csv") %>%
+WT_ATAC_peaks <- read.csv("path\\ETP-ALL_chapter\\ATAC-peaks\\WT_unique_atac.csv") %>%
   na.omit
-A7_ATAC_peaks <- read.csv(".\\ATAC-peaks\\A7_unique_atac.csv") %>%
+A7_ATAC_peaks <- read.csv("path\\ETP-ALL_chapter\\ATAC-peaks\\A7_unique_atac.csv") %>%
   na.omit
-C9_ATAC_peaks <- read.csv(".\\ATAC-peaks\\C9_unique_atac.csv") %>%
+C9_ATAC_peaks <- read.csv("path\\ETP-ALL_chapter\\ATAC-peaks\\C9_unique_atac.csv") %>%
   na.omit
 
 WT_ac_ATAC_peaks <- intersect(WT_unique_ac_promoters, WT_ATAC_peaks$SYMBOL)
 A7_ac_ATAC_peaks <- intersect(A7_unique_ac_promoters, A7_ATAC_peaks$SYMBOL)
 C9_ac_ATAC_peaks <- intersect(C9_unique_ac_promoters, C9_ATAC_peaks$SYMBOL)
 
-wt_vs_clones_diff_expr <- read.csv(".\\Jurkat_wt_v_clones_all_genes (1).csv") %>%
+wt_vs_clones_diff_expr <- read.csv("path\\Jurkat_wt_v_clones_all_genes (1).csv") %>%
   mutate(mRNA_status = case_when(logFC<0 ~ "Downregulated", 
                                  logFC>0 ~ "Upregulated"))
 rna_up_genes <- wt_vs_clones_diff_expr %>%
@@ -319,29 +322,29 @@ venn.diagram(list("A7 ATAC peaks \u2191" = A7_ATAC_peaks$SYMBOL,
                   "A7&C9 RNA \u2191" = rna_up_genes),
              lwd = 0, cex = 3, cat.cex = 1.6, print.mode = "raw", margin = 0.1,
              alpha = c(0.5, 0.5, 0.5), fill = c("#e27602", "#42A5F5", "#E16036"),
-             ".\\rna_up_A7_ac_A7_ATAC_overlaps.png", disable.logging = TRUE)
+             "path\\rna_up_A7_ac_A7_ATAC_overlaps.png", disable.logging = TRUE)
 
 venn.diagram(list("C9 ATAC peaks \u2191" = C9_ATAC_peaks$SYMBOL,
                   "C9 H3K27ac \u2191" = C9_unique_ac_promoters,
                   "A7&C9 RNA \u2191" = rna_up_genes),
              lwd = 0, cex = 3, cat.cex = 1.6, print.mode = "raw", margin = 0.1,
              alpha = c(0.5, 0.5, 0.5), fill = c("#f1b04c", "#4FC3F7", "#E16036"),
-             ".\\rna_up_C9_ac_C9_ATAC_overlaps.png", disable.logging = TRUE)
+             "path\\rna_up_C9_ac_C9_ATAC_overlaps.png", disable.logging = TRUE)
 
 ##now intersect H3K27me3 promoter peaks with ATAC peaks
-WT_unique_me3_promoters <- read.csv(".\\macs2_peaks\\H3K27me3\\contrasts\\annotated_peaks\\WT_unique_me3.csv") %>%
+WT_unique_me3_promoters <- read.csv("path\\macs2_peaks\\H3K27me3\\contrasts\\annotated_peaks\\WT_unique_me3.csv") %>%
   dplyr::filter(annotation %in% c("Promoter (2-3kb)", "Promoter (1-2kb)", "Promoter (<=1kb)")) %>%
   dplyr::pull(SYMBOL) %>%
   unique()%>%
   na.omit
 
-A7_unique_me3_promoters <- read.csv(".\\macs2_peaks\\H3K27me3\\contrasts\\annotated_peaks\\A7_unique_me3.csv") %>%
+A7_unique_me3_promoters <- read.csv("path\\macs2_peaks\\H3K27me3\\contrasts\\annotated_peaks\\A7_unique_me3.csv") %>%
   dplyr::filter(annotation %in% c("Promoter (2-3kb)", "Promoter (1-2kb)", "Promoter (<=1kb)")) %>%
   dplyr::pull(SYMBOL) %>%
   unique()%>%
   na.omit
 
-C9_unique_me3_promoters <- read.csv(".\\macs2_peaks\\H3K27me3\\contrasts\\annotated_peaks\\C9_unique_me3.csv") %>%
+C9_unique_me3_promoters <- read.csv("path\\macs2_peaks\\H3K27me3\\contrasts\\annotated_peaks\\C9_unique_me3.csv") %>%
   dplyr::filter(annotation %in% c("Promoter (2-3kb)", "Promoter (1-2kb)", "Promoter (<=1kb)")) %>%
   dplyr::pull(SYMBOL) %>%
   unique()%>%
@@ -352,14 +355,14 @@ venn.diagram(list("A7 ATAC peaks \u2191" = A7_ATAC_peaks$SYMBOL,
                   "A7&C9 RNA \u2191" = rna_up_genes),
              lwd = 0, cex = 3, cat.cex = 1.6, print.mode = "raw", margin = 0.1,
              alpha = c(0.5, 0.5, 0.5), fill = c("#e27602", "#173518", "#E16036"),
-             ".\\rna_up_WT_me3_unique_A7_ATAC_overlaps.png", disable.logging = TRUE)
+             "path\\rna_up_WT_me3_unique_A7_ATAC_overlaps.png", disable.logging = TRUE)
 
 venn.diagram(list("C9 ATAC peaks \u2191" = C9_ATAC_peaks$SYMBOL,
                   "WT H3K27me3 \u2193" = WT_unique_me3_promoters,
                   "A7&C9 RNA \u2191" = rna_up_genes),
              lwd = 0, cex = 3, cat.cex = 1.6, print.mode = "raw", margin = 0.1,
              alpha = c(0.5, 0.5, 0.5), fill = c("#f1b04c", "#173518", "#E16036"),
-             ".\\rna_up_WT_me3_unique_C9_ATAC_overlaps.png", disable.logging = TRUE)
+             "path\\rna_up_WT_me3_unique_C9_ATAC_overlaps.png", disable.logging = TRUE)
 
 a <- intersect(intersect(A7_ATAC_peaks$SYMBOL,WT_unique_me3_promoters), rna_up_genes)
 b <- intersect(intersect(C9_ATAC_peaks$SYMBOL,WT_unique_me3_promoters), rna_up_genes)

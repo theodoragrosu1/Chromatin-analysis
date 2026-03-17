@@ -7,7 +7,7 @@ library(VennDiagram)
 #this script uses output from reannotation_of_peaks.R script 
 #ooutput: correlation analysis with gene expression
 
-annotated_peaks_wt_ub_saf <- annotated_peaks_WT_ub %>%
+annotated_peaks_wt_me3_saf <- annotated_peaks_WT_me3 %>%
   dplyr::filter(transcriptBiotype == "protein_coding") %>%
   dplyr::select(c("SYMBOL", "seqnames", "start", "end", "strand")) %>%
   dplyr::rename(c("GeneID" = "SYMBOL", 
@@ -17,7 +17,7 @@ annotated_peaks_wt_ub_saf <- annotated_peaks_WT_ub %>%
                   "Strand" = "strand")) %>%
   na.omit()
 
-annotated_peaks_a7_ub_saf <- annotated_peaks_A7_ub %>%
+annotated_peaks_a7_me3_saf <- annotated_peaks_A7_me3 %>%
   dplyr::filter(transcriptBiotype == "protein_coding") %>%
   dplyr::select(c("SYMBOL", "seqnames", "start", "end", "strand")) %>%
   dplyr::rename(c("GeneID" = "SYMBOL", 
@@ -27,7 +27,7 @@ annotated_peaks_a7_ub_saf <- annotated_peaks_A7_ub %>%
                   "Strand" = "strand")) %>%
   na.omit()
 
-annotated_peaks_c9_ub_saf <- annotated_peaks_C9_ub %>%
+annotated_peaks_c9_me3_saf <- annotated_peaks_C9_me3 %>%
   dplyr::filter(transcriptBiotype == "protein_coding") %>%
   dplyr::select(c("SYMBOL", "seqnames", "start", "end", "strand")) %>%
   dplyr::rename(c("GeneID" = "SYMBOL", 
@@ -38,48 +38,48 @@ annotated_peaks_c9_ub_saf <- annotated_peaks_C9_ub %>%
   na.omit()
 
 
-WT_counts_ub <- featureCounts(".\\merged_bams\\WT_ub_deduped.bam", # count reads
+WT_counts_me3 <- featureCounts("path\\merged_bams\\WT_me3_deduped.bam", # count reads
                                annot.inbuilt = "hg38",
-                               annot.ext = annotated_peaks_wt_ub_saf,
+                               annot.ext = annotated_peaks_wt_me3_saf,
                                isGTFAnnotationFile = F,
                                isPairedEnd = T,
                                nthreads = 8) %>%
   melt() %>%
   dplyr::select(c("Var1", "value")) %>%
-  rename(c("GeneID" = "Var1", "WT_counts_ub" = "value")) %>%
+  rename(c("GeneID" = "Var1", "WT_counts_me3" = "value")) %>%
   na.omit()
 
 
-A7_counts_ub <- featureCounts(".\\merged_bams\\A7_ub_deduped.bam", # count reads
+A7_counts_me3 <- featureCounts("path\\merged_bams\\A7_me3_deduped.bam", # count reads
                                annot.inbuilt = "hg38",
-                               annot.ext = annotated_peaks_a7_ub_saf,
+                               annot.ext = annotated_peaks_a7_me3_saf,
                                isGTFAnnotationFile = F,
                                isPairedEnd = T,
                                nthreads = 8) %>%
   melt() %>%
   dplyr::select(c("Var1", "value")) %>%
-  rename(c("GeneID" = "Var1", "A7_counts_ub" = "value")) %>%
+  rename(c("GeneID" = "Var1", "A7_counts_me3" = "value")) %>%
   na.omit()
 
-C9_counts_ub <- featureCounts(".\\merged_bams\\C9_ub_deduped.bam", # count reads
+C9_counts_me3 <- featureCounts("path\\merged_bams\\C9_me3_deduped.bam", # count reads
                                annot.inbuilt = "hg38",
-                               annot.ext = annotated_peaks_c9_ub_saf,
+                               annot.ext = annotated_peaks_c9_me3_saf,
                                isGTFAnnotationFile = F,
                                isPairedEnd = T,
                                nthreads = 8) %>%
   melt() %>%
   dplyr::select(c("Var1", "value")) %>%
-  rename(c("GeneID" = "Var1", "C9_counts_ub" = "value")) %>%
+  rename(c("GeneID" = "Var1", "C9_counts_me3" = "value")) %>%
   na.omit()
 
 
-C9_counts_ub$GeneID <- as.character(C9_counts_ub$GeneID)
-A7_counts_ub$GeneID <- as.character(A7_counts_ub$GeneID)
-WT_counts_ub$GeneID <- as.character(WT_counts_ub$GeneID)
+C9_counts_me3$GeneID <- as.character(C9_counts_me3$GeneID)
+A7_counts_me3$GeneID <- as.character(A7_counts_me3$GeneID)
+WT_counts_me3$GeneID <- as.character(WT_counts_me3$GeneID)
 
 
-gene_lengths <- annotated_peaks_WT_ub %>%
-  rbind(annotated_peaks_A7_ub) %>%
+gene_lengths <- annotated_peaks_WT_me3 %>%
+  rbind(annotated_peaks_A7_me3) %>%
   #dplyr::filter(transcriptBiotype == "protein_coding") %>%
   dplyr::select(c("SYMBOL", "geneLength")) %>%
   slice_max(geneLength, by = SYMBOL) %>%
@@ -89,13 +89,13 @@ gene_lengths <- annotated_peaks_WT_ub %>%
 
 gene_lengths$geneLength <- gene_lengths$geneLength + 3000
 
-counts_matrix <- full_join(WT_counts_ub, A7_counts_ub, by = "GeneID") %>%
-  full_join(C9_counts_ub, by = "GeneID") %>%
+counts_matrix <- full_join(WT_counts_me3, A7_counts_me3, by = "GeneID") %>%
+  full_join(C9_counts_me3, by = "GeneID") %>%
   dplyr::left_join(gene_lengths, by = "GeneID")
 
-counts_matrix$WT_counts_ub <- as.numeric(counts_matrix$WT_counts_ub)
-counts_matrix$C9_counts_ub <- as.numeric(counts_matrix$C9_counts_ub)
-counts_matrix$A7_counts_ub <- as.numeric(counts_matrix$A7_counts_ub)
+counts_matrix$WT_counts_me3 <- as.numeric(counts_matrix$WT_counts_me3)
+counts_matrix$C9_counts_me3 <- as.numeric(counts_matrix$C9_counts_me3)
+counts_matrix$A7_counts_me3 <- as.numeric(counts_matrix$A7_counts_me3)
 
 counts_matrix <- counts_matrix %>%
   mutate_if(is.numeric, ~replace_na(., 0))
@@ -107,35 +107,35 @@ counts_matrix <- counts_matrix %>%
   as.matrix()
 
 
-counts_list <- DGEList(counts=counts_matrix[,c("WT_counts_ub", "A7_counts_ub", "C9_counts_ub")], genes=data.frame(Length=counts_matrix[,"geneLength"]))
+counts_list <- DGEList(counts=counts_matrix[,c("WT_counts_me3", "A7_counts_me3", "C9_counts_me3")], genes=data.frame(Length=counts_matrix[,"geneLength"]))
 
 counts_list <- calcNormFactors(counts_list)
 
 RPKM <- log2(rpkm(counts_list)+1) %>%
   as.data.frame()
 
-RPKM$logFC_A7_WT <- RPKM$A7_counts_ub - RPKM$WT_counts_ub
-RPKM$logFC_C9_WT <- RPKM$C9_counts_ub - RPKM$WT_counts_ub
+RPKM$logFC_A7_WT <- RPKM$A7_counts_me3 - RPKM$WT_counts_me3
+RPKM$logFC_C9_WT <- RPKM$C9_counts_me3 - RPKM$WT_counts_me3
 
 RPKM$geneID <- rownames(RPKM)
 
 
-expression_wt_vs_a7 <- read.csv(".\\RNAseq\\normalised_expression_jurkat_wt_vs_a7.csv") %>%
+expression_wt_vs_a7 <- read.csv("path\normalised_expression_jurkat_wt_vs_a7.csv") %>%
   dplyr::mutate(regulation = case_when(LogFC<0 ~ "Downregulated", 
-                                       LogFC>0 ~ "Upregulated"))
-expression_wt_vs_c9 <- read.csv(".\\RNAseq\\normalised_expression_jurkat_wt_vs_c9.csv") %>%
+                                                 LogFC>0 ~ "Upregulated"))
+expression_wt_vs_c9 <- read.csv("path\normalised_expression_jurkat_wt_vs_c9.csv") %>%
   dplyr::mutate(regulation = case_when(LogFC<0 ~ "Downregulated", 
                                        LogFC>0 ~ "Upregulated"))
 
 RPKM_A7 <- RPKM[,-5]
 
-ub_and_rna <- left_join(RPKM_A7, expression_wt_vs_a7, by = "geneID") %>%
+me3_and_rna <- left_join(RPKM_A7, expression_wt_vs_a7, by = "geneID") %>%
   na.omit()
 
-cor_results <- cor.test(ub_and_rna$logFC_A7_WT, ub_and_rna$LogFC, method = "pearson")
+cor_results <- cor.test(me3_and_rna$logFC_A7_WT, me3_and_rna$LogFC, method = "pearson")
 
 
-a7_ub_gene_expr <- ggplot(ub_and_rna, aes(x = logFC_A7_WT, y = LogFC)) +
+a7_me3_gene_expr <- ggplot(me3_and_rna, aes(x = logFC_A7_WT, y = LogFC)) +
   stat_density_2d(aes(fill = after_stat(density)),
                   geom = "raster", contour = FALSE) +
   geom_point(size = 1.5, alpha = 0.3, color = "#8B008B") +
@@ -144,7 +144,7 @@ a7_ub_gene_expr <- ggplot(ub_and_rna, aes(x = logFC_A7_WT, y = LogFC)) +
   geom_vline(xintercept = 0, linetype = "dashed",
              color = "black", size = 0.5) +
   scale_fill_gradient(low = "white", high = "black") +
-  labs(x = "H2AK119ub A7 - WT", y = "mRNA A7 - WT") +
+  labs(x = "H3K27me3 A7 - WT", y = "mRNA A7 - WT") +
   annotate("text", x = Inf, y = Inf, hjust = 1.1, vjust = 1.5,
            label = paste0("R = ", round(cor_results$estimate, 2),
                           "\np = ", format.pval(cor_results$p.value, digits = 2)),
@@ -154,17 +154,17 @@ a7_ub_gene_expr <- ggplot(ub_and_rna, aes(x = logFC_A7_WT, y = LogFC)) +
         plot.title = element_text(hjust = 0.5, face = "bold"),
         legend.position = "right")
 
-ggsave(a7_ub_gene_expr, file = ".\\scatter_density_a7_ub.pdf", width = 7, height = 6, dpi = 300)
+ggsave(a7_me3_gene_expr, file = "path\scatter_density_a7.pdf", width = 7, height = 6, dpi = 300)
 
 RPKM_C9 <- RPKM[,-4]
 
-ub_and_rna <- left_join(RPKM_C9, expression_wt_vs_c9, by = "geneID") %>%
+me3_and_rna <- left_join(RPKM_C9, expression_wt_vs_c9, by = "geneID") %>%
   na.omit()
 
-cor_results <- cor.test(ub_and_rna$logFC_C9_WT, ub_and_rna$LogFC, method = "pearson")
+cor_results <- cor.test(me3_and_rna$logFC_C9_WT, me3_and_rna$LogFC, method = "pearson")
 
 
-c9_ub_gene_expr <- ggplot(ub_and_rna, aes(x = logFC_C9_WT, y = LogFC)) +
+c9_me3_gene_expr <- ggplot(me3_and_rna, aes(x = logFC_C9_WT, y = LogFC)) +
   stat_density_2d(aes(fill = after_stat(density)),
                   geom = "raster", contour = FALSE) +
   geom_point(size = 1.5, alpha = 0.3, color = "#FFA500") +
@@ -173,7 +173,7 @@ c9_ub_gene_expr <- ggplot(ub_and_rna, aes(x = logFC_C9_WT, y = LogFC)) +
   geom_vline(xintercept = 0, linetype = "dashed",
              color = "black", size = 0.5) +
   scale_fill_gradient(low = "white", high = "black") +
-  labs(x = "H2AK119ub C9 - WT", y = "mRNA C9 - WT") +
+  labs(x = "H3K27me3 C9 - WT", y = "mRNA C9 - WT") +
   annotate("text", x = Inf, y = Inf, hjust = 1.1, vjust = 1.5,
            label = paste0("R = ", round(cor_results$estimate, 2),
                           "\np = ", format.pval(cor_results$p.value, digits = 2)),
@@ -182,5 +182,5 @@ c9_ub_gene_expr <- ggplot(ub_and_rna, aes(x = logFC_C9_WT, y = LogFC)) +
   theme(axis.title = element_text(face = "bold", size = 12),
         plot.title = element_text(hjust = 0.5, face = "bold"),
         legend.position = "right")
-ggsave(c9_ub_gene_expr, file = ".\\scatter_density_c9_ub.pdf", width = 7, height = 6, dpi = 300)
+ggsave(c9_me3_gene_expr, file = "path\scatter_density_c9.pdf", width = 7, height = 6, dpi = 300)
 

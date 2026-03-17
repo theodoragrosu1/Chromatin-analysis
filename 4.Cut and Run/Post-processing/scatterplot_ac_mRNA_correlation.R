@@ -38,7 +38,7 @@ annotated_peaks_c9_ac_saf <- annotated_peaks_C9_ac %>%
   na.omit()
 
 
-WT_counts_ac <- featureCounts(".\\merged_bams\\WT_ac_deduped.bam", # count reads
+WT_counts_ac <- featureCounts("path\\merged_bams\\WT_ac_deduped.bam", # count reads
                                annot.inbuilt = "hg38",
                                annot.ext = annotated_peaks_wt_ac_saf,
                                isGTFAnnotationFile = F,
@@ -50,7 +50,7 @@ WT_counts_ac <- featureCounts(".\\merged_bams\\WT_ac_deduped.bam", # count reads
   na.omit()
 
 
-A7_counts_ac <- featureCounts(".\\merged_bams\\A7_ac_deduped.bam", # count reads
+A7_counts_ac <- featureCounts("path\\merged_bams\\A7_ac_deduped.bam", # count reads
                                annot.inbuilt = "hg38",
                                annot.ext = annotated_peaks_a7_ac_saf,
                                isGTFAnnotationFile = F,
@@ -61,7 +61,7 @@ A7_counts_ac <- featureCounts(".\\merged_bams\\A7_ac_deduped.bam", # count reads
   rename(c("GeneID" = "Var1", "A7_counts_ac" = "value")) %>%
   na.omit()
 
-C9_counts_ac <- featureCounts(".\\merged_bams\\C9_ac_deduped.bam", # count reads
+C9_counts_ac <- featureCounts("path\\merged_bams\\C9_ac_deduped.bam", # count reads
                                annot.inbuilt = "hg38",
                                annot.ext = annotated_peaks_c9_ac_saf,
                                isGTFAnnotationFile = F,
@@ -120,10 +120,10 @@ RPKM$logFC_C9_WT <- RPKM$C9_counts_ac - RPKM$WT_counts_ac
 RPKM$geneID <- rownames(RPKM)
 
 
-expression_wt_vs_a7 <- read.csv(".\\RNAseq\\normalised_expression_jurkat_wt_vs_a7.csv") %>%
+expression_wt_vs_a7 <- read.csv("path\\normalised_expression_jurkat_wt_vs_a7.csv") %>%
   dplyr::mutate(regulation = case_when(LogFC<0 ~ "Downregulated", 
                                        LogFC>0 ~ "Upregulated"))
-expression_wt_vs_c9 <- read.csv(".\\RNAseq\\normalised_expression_jurkat_wt_vs_c9.csv") %>%
+expression_wt_vs_c9 <- read.csv("path\\normalised_expression_jurkat_wt_vs_c9.csv") %>%
   dplyr::mutate(regulation = case_when(LogFC<0 ~ "Downregulated", 
                                        LogFC>0 ~ "Upregulated"))
 
@@ -154,7 +154,7 @@ a7_ac_gene_expr <- ggplot(ac_and_rna, aes(x = logFC_A7_WT, y = LogFC)) +
         plot.title = element_text(hjust = 0.5, face = "bold"),
         legend.position = "right")
 
-ggsave(a7_ac_gene_expr, file = ".\\scatter_density_a7_ac.pdf", width = 7, height = 6, dpi = 300)
+ggsave(a7_ac_gene_expr, file = "path\\scatter_density_a7_ac.pdf", width = 7, height = 6, dpi = 300)
 
 RPKM_C9 <- RPKM[,-4]
 
@@ -182,7 +182,7 @@ c9_ac_gene_expr <- ggplot(ac_and_rna, aes(x = logFC_C9_WT, y = LogFC)) +
   theme(axis.title = element_text(face = "bold", size = 12),
         plot.title = element_text(hjust = 0.5, face = "bold"),
         legend.position = "right")
-ggsave(c9_ac_gene_expr, file = ".\\scatter_density_c9_ac.pdf", width = 7, height = 6, dpi = 300)
+ggsave(c9_ac_gene_expr, file = "path\\scatter_density_c9_ac.pdf", width = 7, height = 6, dpi = 300)
 
 
 
@@ -229,7 +229,7 @@ annotated_peaks_c9_ac_promoters_saf <- annotated_peaks_C9_ac_promoters %>%
   na.omit()
 
 
-WT_counts_ac <- featureCounts(".\\merged_bams\\WT_ac_deduped.bam", # count reads
+WT_counts_ac <- featureCounts("path\\merged_bams\\WT_ac_deduped.bam", # count reads
                               annot.inbuilt = "hg38",
                               annot.ext = annotated_peaks_wt_ac_promoters_saf,
                               isGTFAnnotationFile = F,
@@ -241,7 +241,7 @@ WT_counts_ac <- featureCounts(".\\merged_bams\\WT_ac_deduped.bam", # count reads
   na.omit()
 
 
-A7_counts_ac <- featureCounts(".\\merged_bams\\A7_ac_deduped.bam", # count reads
+A7_counts_ac <- featureCounts("path\\merged_bams\\A7_ac_deduped.bam", # count reads
                               annot.inbuilt = "hg38",
                               annot.ext = annotated_peaks_a7_ac_promoters_saf,
                               isGTFAnnotationFile = F,
@@ -252,7 +252,7 @@ A7_counts_ac <- featureCounts(".\\merged_bams\\A7_ac_deduped.bam", # count reads
   rename(c("GeneID" = "Var1", "A7_counts_ac" = "value")) %>%
   na.omit()
 
-C9_counts_ac <- featureCounts(".\\merged_bams\\C9_ac_deduped.bam", # count reads
+C9_counts_ac <- featureCounts("path\\merged_bams\\C9_ac_deduped.bam", # count reads
                               annot.inbuilt = "hg38",
                               annot.ext = annotated_peaks_c9_ac_promoters_saf,
                               isGTFAnnotationFile = F,
@@ -311,10 +311,10 @@ RPKM$logFC_C9_WT <- RPKM$C9_counts_ac - RPKM$WT_counts_ac
 RPKM$geneID <- rownames(RPKM)
 
 
-expression_wt_vs_a7 <- read.csv(".\\RNAseq\\normalised_expression_jurkat_wt_vs_a7.csv") %>%
+expression_wt_vs_a7 <- read.csv("path\\normalised_expression_jurkat_wt_vs_a7.csv") %>%
   dplyr::mutate(regulation = case_when(LogFC<0 ~ "Downregulated", 
                                        LogFC>0 ~ "Upregulated"))
-expression_wt_vs_c9 <- read.csv(".\\RNAseq\\normalised_expression_jurkat_wt_vs_c9.csv") %>%
+expression_wt_vs_c9 <- read.csv("path\\normalised_expression_jurkat_wt_vs_c9.csv") %>%
   dplyr::mutate(regulation = case_when(LogFC<0 ~ "Downregulated", 
                                        LogFC>0 ~ "Upregulated"))
 
@@ -345,7 +345,7 @@ a7_ac_gene_expr <- ggplot(ac_and_rna, aes(x = logFC_A7_WT, y = LogFC)) +
         plot.title = element_text(hjust = 0.5, face = "bold"),
         legend.position = "right")
 
-ggsave(a7_ac_gene_expr, file = ".\\scatter_density_a7_ac_promoters.pdf", width = 7, height = 6, dpi = 300)
+ggsave(a7_ac_gene_expr, file = "path\\scatter_density_a7_ac_promoters.pdf", width = 7, height = 6, dpi = 300)
 
 RPKM_C9 <- RPKM[,-4]
 
@@ -373,17 +373,17 @@ c9_ac_gene_expr <- ggplot(ac_and_rna, aes(x = logFC_C9_WT, y = LogFC)) +
   theme(axis.title = element_text(face = "bold", size = 12),
         plot.title = element_text(hjust = 0.5, face = "bold"),
         legend.position = "right")
-ggsave(c9_ac_gene_expr, file = "C.\\scatter_density_c9_ac_promoters.pdf", width = 7, height = 6, dpi = 300)
+ggsave(c9_ac_gene_expr, file = "path\\scatter_density_c9_ac_promoters.pdf", width = 7, height = 6, dpi = 300)
 
 ######look if the H3K27me3 lost loci which have gained H3K27ac correlate with gene expression
 
 intersect_me3_wt_ac_a7 <- intersect(wt_me3_lost, ac_up_a7)
 intersect_me3_wt_ac_c9 <- intersect(wt_me3_lost, ac_up_c9)
 
-expression_wt_vs_a7 <- read.csv(".\\RNAseq\\normalised_expression_jurkat_wt_vs_a7.csv") %>%
+expression_wt_vs_a7 <- read.csv("path\\normalised_expression_jurkat_wt_vs_a7.csv") %>%
   dplyr::mutate(regulation = case_when(LogFC<0 ~ "Downregulated", 
                                        LogFC>0 ~ "Upregulated"))
-expression_wt_vs_c9 <- read.csv(".\\RNAseq\\normalised_expression_jurkat_wt_vs_c9.csv") %>%
+expression_wt_vs_c9 <- read.csv("path\\normalised_expression_jurkat_wt_vs_c9.csv") %>%
   dplyr::mutate(regulation = case_when(LogFC<0 ~ "Downregulated", 
                                        LogFC>0 ~ "Upregulated"))
 
@@ -415,7 +415,7 @@ a7_ac_gene_expr <- ggplot(ac_and_rna, aes(x = logFC_A7_WT, y = LogFC)) +
         plot.title = element_text(hjust = 0.5, face = "bold"),
         legend.position = "right")
 
-ggsave(a7_ac_gene_expr, file = ".\\scatter_density_a7_ac_at_lost_me3.pdf", width = 7, height = 6, dpi = 300)
+ggsave(a7_ac_gene_expr, file = "path\\scatter_density_a7_ac_at_lost_me3.pdf", width = 7, height = 6, dpi = 300)
 
 RPKM_C9 <- RPKM[,-4] %>%
   dplyr::filter(geneID %in% intersect_me3_wt_ac_c9)
@@ -444,7 +444,7 @@ c9_ac_gene_expr <- ggplot(ac_and_rna, aes(x = logFC_C9_WT, y = LogFC)) +
   theme(axis.title = element_text(face = "bold", size = 12),
         plot.title = element_text(hjust = 0.5, face = "bold"),
         legend.position = "right")
-ggsave(c9_ac_gene_expr, file = ".\\scatter_density_c9_ac_at_lost_me3.pdf", width = 7, height = 6, dpi = 300)
+ggsave(c9_ac_gene_expr, file = "path\\scatter_density_c9_ac_at_lost_me3.pdf", width = 7, height = 6, dpi = 300)
 
 
 
