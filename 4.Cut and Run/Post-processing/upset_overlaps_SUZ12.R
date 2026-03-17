@@ -4,7 +4,7 @@ library(ComplexUpset)
 library(tidyverse)
 library(ChIPseeker)
 
-fs <- dir("C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\", 
+fs <- dir("path\\cutrun_peaks\\SUZ12\\", 
           pattern = "*_filtered.bed", full.names = TRUE)
 
 
@@ -68,26 +68,26 @@ a7_c9_SUZ12_overlap_peaks <- venn$overlapList[["110"]][["A7_SUZ12_peaks_filtered
   as.data.frame() %>%
   dplyr::select(c("seqnames", "start", "end"))
 
-dir.create("C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\")
-write.table(wt_SUZ12_unique_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\WT_SUZ12_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-write.table(a7_SUZ12_unique_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\A7_SUZ12_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-write.table(c9_SUZ12_unique_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\C9_SUZ12_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-write.table(wt_a7_c9_SUZ12_overlap_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\wt_a7_c9_SUZ12_overlap_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-write.table(a7_c9_SUZ12_overlap_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\a7_c9_SUZ12_overlap_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+dir.create("path\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\")
+write.table(wt_SUZ12_unique_peaks, file = "path\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\WT_SUZ12_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+write.table(a7_SUZ12_unique_peaks, file = "path\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\A7_SUZ12_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+write.table(c9_SUZ12_unique_peaks, file = "path\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\C9_SUZ12_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+write.table(wt_a7_c9_SUZ12_overlap_peaks, file = "path\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\wt_a7_c9_SUZ12_overlap_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+write.table(a7_c9_SUZ12_overlap_peaks, file = "path\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\a7_c9_SUZ12_overlap_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
 rbind(a7_SUZ12_unique_peaks, c9_SUZ12_unique_peaks) %>%
   rbind(a7_c9_SUZ12_overlap_peaks) %>%
-  write.table(file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\a7_c9_SUZ12_union_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(file = "path\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\a7_c9_SUZ12_union_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
 rbind(a7_SUZ12_unique_peaks, a7_c9_SUZ12_overlap_peaks) %>%
-  write.table(file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\a7_SUZ12_specific_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(file = "path\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\a7_SUZ12_specific_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
 rbind(c9_SUZ12_unique_peaks, a7_c9_SUZ12_overlap_peaks) %>%
-  write.table(file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\c9_SUZ12_specific_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(file = "path\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\c9_SUZ12_specific_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
 
 rbind(wt_SUZ12_unique_peaks, a7_SUZ12_unique_peaks) %>%
   rbind(c9_SUZ12_unique_peaks) %>%
   rbind(a7_c9_SUZ12_overlap_peaks) %>%
   rbind(wt_a7_c9_SUZ12_overlap_peaks) %>%
-  write.table(file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\all_SUZ12_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(file = "path\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\all_SUZ12_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
