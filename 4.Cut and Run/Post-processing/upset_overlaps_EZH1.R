@@ -4,7 +4,7 @@ library(ComplexUpset)
 library(tidyverse)
 library(ChIPseeker)
 
-fs <- dir("C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\EZH1\\", 
+fs <- dir("path\\cutrun_peaks\\EZH1\\", 
           pattern = "*_filtered.bed", full.names = TRUE)
 
 
@@ -68,26 +68,26 @@ a7_c9_EZH1_overlap_peaks <- venn$overlapList[["110"]][["A7_EZH1_peaks_filtered.b
   as.data.frame() %>%
   dplyr::select(c("seqnames", "start", "end"))
 
-dir.create("C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\")
-write.table(wt_EZH1_unique_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\WT_EZH1_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-write.table(a7_EZH1_unique_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\A7_EZH1_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-write.table(c9_EZH1_unique_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\C9_EZH1_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-write.table(wt_a7_c9_EZH1_overlap_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\wt_a7_c9_EZH1_overlap_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-write.table(a7_c9_EZH1_overlap_peaks, file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\a7_c9_EZH1_overlap_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+dir.create("path\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\")
+write.table(wt_EZH1_unique_peaks, file = "path\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\WT_EZH1_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+write.table(a7_EZH1_unique_peaks, file = "path\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\A7_EZH1_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+write.table(c9_EZH1_unique_peaks, file = "path\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\C9_EZH1_unique_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+write.table(wt_a7_c9_EZH1_overlap_peaks, file = "path\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\wt_a7_c9_EZH1_overlap_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+write.table(a7_c9_EZH1_overlap_peaks, file = "path\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\a7_c9_EZH1_overlap_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
 rbind(a7_EZH1_unique_peaks, c9_EZH1_unique_peaks) %>%
   rbind(a7_c9_EZH1_overlap_peaks) %>%
-  write.table(file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\a7_c9_EZH1_union_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(file = "path\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\a7_c9_EZH1_union_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
 rbind(a7_EZH1_unique_peaks, a7_c9_EZH1_overlap_peaks) %>%
-  write.table(file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\a7_EZH1_specific_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(file = "path\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\a7_EZH1_specific_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
 rbind(c9_EZH1_unique_peaks, a7_c9_EZH1_overlap_peaks) %>%
-  write.table(file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\c9_EZH1_specific_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(file = "path\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\c9_EZH1_specific_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
 
 rbind(wt_EZH1_unique_peaks, a7_EZH1_unique_peaks) %>%
   rbind(c9_EZH1_unique_peaks) %>%
   rbind(a7_c9_EZH1_overlap_peaks) %>%
   rbind(wt_a7_c9_EZH1_overlap_peaks) %>%
-  write.table(file = "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\all_EZH1_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(file = "path\\cutrun_peaks\\EZH1\\EZH1_filtered\\contrasts\\all_EZH1_peaks.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
