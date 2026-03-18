@@ -93,7 +93,7 @@ annotated_SUZ12_peaks_plot <- summary_annotation_SUZ12 %>%
   coord_flip() +
   scale_y_continuous(labels = scales::comma, limits = c(0, 8000)) +
   labs(x = "Sample") +
-  ylab("No. EH1 peaks")
+  ylab("No. SUZ12 peaks")
 
 
 ggsave(dir, filename = ".\\annotated_peaks\\annotated_contrast_peaks_SUZ12.pdf", plot = annotated_SUZ12_peaks_plot, 
