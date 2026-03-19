@@ -21,7 +21,7 @@ edb <- EnsDb.Hsapiens.v86
 seqlevelsStyle(edb) <- "UCSC"
 txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
 
-dir <- "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\"
+dir <- "path\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\"
 
 #load peak files
 peak_files <- list(A7_C9_common_SUZ12 = paste0(dir, "a7_c9_SUZ12_overlap_peaks.bed"),
