@@ -21,7 +21,7 @@ edb <- EnsDb.Hsapiens.v86
 seqlevelsStyle(edb) <- "UCSC"
 txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
 
-dir <- "C:\\Users\\tgrosu\\OneDrive\\Desktop\\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\"
+dir <- "path\cutrun_peaks\\SUZ12\\SUZ12_filtered\\contrasts\\"
 
 #load peak files
 peak_files <- list(A7_C9_common_SUZ12 = paste0(dir, "a7_c9_SUZ12_overlap_peaks.bed"),
@@ -93,7 +93,7 @@ annotated_SUZ12_peaks_plot <- summary_annotation_SUZ12 %>%
   coord_flip() +
   scale_y_continuous(labels = scales::comma, limits = c(0, 8000)) +
   labs(x = "Sample") +
-  ylab("No. EH1 peaks")
+  ylab("No. SUZ12 peaks")
 
 
 ggsave(dir, filename = ".\\annotated_peaks\\annotated_contrast_peaks_SUZ12.pdf", plot = annotated_SUZ12_peaks_plot, 
