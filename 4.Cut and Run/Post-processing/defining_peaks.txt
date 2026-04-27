@@ -1,0 +1,150 @@
+
+# PcG loci in Jurkat 
+# H3K27me3 present in WT AND H2AK119ub present in WT
+bedtools intersect -a ./peak_files/WT_me3_peaks.bed  -b ./peak_files/WT_ub_peaks.bed  -u > ./peak_files/WT_PcG_loci.bed
+
+# PRC2-only in Jurkat WT
+# H3K27me3 present in WT, NO H2AK119ub
+bedtools subtract -a ./peak_files/WT_me3_peaks.bed -b ./peak_files/WT_ub_peaks.bed  > ./peak_files/PRC2_only_wt.bed
+
+# PRC1-only in Jurkat WT
+# H2AK119ub present in WT, NO H3K27me3
+bedtools subtract -a ./peak_files/WT_ub_peaks.bed  -b ./peak_files/WT_me3_peaks.bed  > ./peak_files/PRC1_only_wt.bed
+
+# EZH1-only in Jurkat WT
+# EZH1 present in WT, NO H3K27me3, NO H2AK119ub
+# These are PRC2-independent EZH1 sites
+bedtools subtract  -a ./peak_files/WT_EZH1_peaks_chr.bed  -b ./peak_files/WT_me3_peaks.bed | bedtools subtract -a - -b ./peak_files/WT_ub_peaks.bed > ./peak_files/EZH1_only_wt.bed
+
+# ============================================================
+# Annotate each class with SUZ12 co-occupancy (question: does SUZ12 need to be there at all PRC2 loci?)
+# ============================================================
+
+# SUZ12 at PRC2+PRC1 sites
+bedtools intersect  -a ./peak_files/WT_PcG_loci.bed   -b ./peak_files/WT_SUZ12_peaks_chr.bed  -u  > ./peak_files/WT_PcG_loci_SUZ12.bed
+
+# SUZ12 at PRC2-only sites
+bedtools intersect  -a ./peak_files/PRC2_only_wt.bed  -b ./peak_files/WT_SUZ12_peaks_chr.bed  -u  > ./peak_files/PRC2_only_wt_SUZ12.bed
+
+#SUZ12 at PRC1 only sites
+bedtools intersect  -a ./peak_files/PRC1_only_wt.bed  -b ./peak_files/WT_SUZ12_peaks_chr.bed  -u  > ./peak_files/PRC1_only_wt_SUZ12.bed
+
+#SUZ12 at EZH1 only sites
+bedtools intersect  -a ./peak_files/EZH1_only_wt.bed  -b ./peak_files/WT_SUZ12_peaks_chr.bed  -u  > ./peak_files/EZH1_only_wt_SUZ12.bed
+
+# ============================================================
+# Annotate each class with ATAC (open vs closed chromatin)
+# ============================================================
+
+# PcG loci --> open chromatin in WT? how about in A7 and C9?
+bedtools intersect  -a  ./peak_files/WT_PcG_loci.bed  -b ./peak_files/WT_ATAC_unique.bed   -u  > ./peak_files/PcG_open_wt.bed
+
+bedtools intersect  -a  ./peak_files/PRC1_only_wt.bed  -b ./peak_files/WT_ATAC_unique.bed   -u  > ./peak_files/PRC1_only_open_wt.bed
+
+#Do WT PcG loci open up in EZH2 KO?
+bedtools intersect  -a  ./peak_files/WT_PcG_loci.bed  -b ./peak_files/A7_ATAC_unique.bed   -u  > ./peak_files/PcG_open_a7.bed
+
+bedtools intersect  -a  ./peak_files/WT_PcG_loci.bed  -b ./peak_files/C9_ATAC_unique.bed   -u  > ./peak_files/PcG_open_c9.bed
+
+
+#PRC2 only peaks, ATAC status
+bedtools intersect  -a  ./peak_files/PRC2_only_wt.bed  -b ./peak_files/WT_ATAC_unique.bed   > ./peak_files/PRC2_only_open_wt.bed
+
+bedtools intersect  -a  ./peak_files/PRC2_only_wt.bed  -b ./peak_files/A7_ATAC_unique.bed  > ./peak_files/PRC2_only_open_a7.bed
+
+bedtools intersect  -a  ./peak_files/PRC2_only_wt.bed  -b ./peak_files/C9_ATAC_unique.bed   > ./peak_files/PRC2_only_open_c9.bed
+
+
+#PRC1 only peaks, ATAC status
+bedtools intersect  -a  ./peak_files/PRC1_only_wt.bed  -b ./peak_files/WT_ATAC_unique.bed   > ./peak_files/PRC1_only_open_wt.bed
+
+bedtools intersect  -a  ./peak_files/PRC1_only_wt.bed  -b ./peak_files/A7_ATAC_unique.bed  > ./peak_files/PRC1_only_open_a7.bed
+
+bedtools intersect  -a  ./peak_files/PRC1_only_wt.bed  -b ./peak_files/C9_ATAC_unique.bed   > ./peak_files/PRC1_only_open_c9.bed
+
+
+#are there any open regions at PcG + SUZ12 loci? How about the other classes?
+bedtools intersect  -a  ./peak_files/WT_PcG_loci_SUZ12.bed  -b ./peak_files/WT_ATAC_unique.bed   > ./peak_files/WT_PcG_SUZ12_open_wt.bed
+bedtools intersect  -a  ./peak_files/WT_PcG_loci_SUZ12.bed  -b ./peak_files/A7_ATAC_unique.bed  > ./peak_files/WT_PcG_SUZ12_open_a7.bed
+bedtools intersect  -a  ./peak_files/WT_PcG_loci_SUZ12.bed  -b ./peak_files/C9_ATAC_unique.bed   > ./peak_files/WT_PcG_SUZ12_open_c9.bed
+
+bedtools intersect  -a  ./peak_files/PRC2_only_wt_SUZ12.bed  -b ./peak_files/WT_ATAC_unique.bed   > ./peak_files/WT_PRC2_SUZ12_open_wt.bed
+bedtools intersect  -a  ./peak_files/PRC2_only_wt_SUZ12.bed  -b ./peak_files/A7_ATAC_unique.bed  > ./peak_files/WT_PRC2_SUZ12_open_a7.bed
+bedtools intersect  -a  ./peak_files/PRC2_only_wt_SUZ12.bed  -b ./peak_files/C9_ATAC_unique.bed   > ./peak_files/WT_PRC2_SUZ12_open_c9.bed
+
+bedtools intersect  -a  ./peak_files/PRC1_only_wt_SUZ12.bed  -b ./peak_files/WT_ATAC_unique.bed   > ./peak_files/WT_PRC1_SUZ12_open_wt.bed
+bedtools intersect  -a  ./peak_files/PRC1_only_wt_SUZ12.bed  -b ./peak_files/A7_ATAC_unique.bed  > ./peak_files/WT_PRC1_SUZ12_open_a7.bed
+bedtools intersect  -a  ./peak_files/PRC1_only_wt_SUZ12.bed  -b ./peak_files/C9_ATAC_unique.bed   > ./peak_files/WT_PRC1_SUZ12_open_c9.bed
+
+
+bedtools intersect  -a  ./peak_files/EZH1_only_wt.bed  -b ./peak_files/WT_ATAC_unique.bed   > ./peak_files/WT_EZH1_open_wt.bed
+bedtools intersect  -a  ./peak_files/EZH1_only_wt.bed  -b ./peak_files/A7_ATAC_unique.bed  > ./peak_files/WT_EZH1_open_a7.bed
+bedtools intersect  -a  ./peak_files/EZH1_only_wt.bed  -b ./peak_files/C9_ATAC_unique.bed   > ./peak_files/WT_EZH1_open_c9.bed
+
+
+bedtools intersect  -a  ./peak_files/EZH1_only_wt_SUZ12.bed  -b ./peak_files/WT_ATAC_unique.bed   > ./peak_files/WT_EZH1_SUZ12_open_wt.bed
+bedtools intersect  -a  ./peak_files/EZH1_only_wt_SUZ12.bed  -b ./peak_files/A7_ATAC_unique.bed  > ./peak_files/WT_EZH1_SUZ12_open_a7.bed
+bedtools intersect  -a  ./peak_files/EZH1_only_wt_SUZ12.bed  -b ./peak_files/C9_ATAC_unique.bed   > ./peak_files/WT_EZH1_SUZ12_open_c9.bed
+
+
+#define variant PRC1 loci, must somehow be above H3K27me3 levels? quite complicated?
+
+
+#intersect EZH1 A7/C9 with H3K27me3 WT,A7 and C9, does EZH1 maintain H3K27me3 levels? check also how many H3K27me3 are retained between WT and clones to put this into context
+
+bedtools intersect  -a  ./peak_files/WT_EZH1_peaks_chr.bed  -b ./peak_files/WT_me3_peaks.bed  > ./peak_files/WT_EZH1_WT_me3_peaks.bed
+
+bedtools intersect  -a  ./peak_files/A7_EZH1_peaks_chr.bed  -b ./peak_files/A7_me3_peaks.bed  > ./peak_files/A7_EZH1_A7_me3_peaks.bed
+
+bedtools intersect  -a  ./peak_files/C9_EZH1_peaks_chr.bed  -b ./peak_files/C9_me3_peaks.bed  > ./peak_files/C9_EZH1_C9_me3_peaks.bed
+
+ bedtools intersect  -a  ./peak_files/WT_EZH1_peaks_chr.bed  -b ./peak_files/WT_ATAC_unique.bed  > ./peak_files/WT_EZH1_WT_ATAC_peaks.bed
+
+ bedtools intersect  -a  ./peak_files/A7_EZH1_peaks
+_chr.bed  -b ./peak_files/A7_ATAC_unique.bed  > ./peak_files/A7_EZH1_A7_ATAC_peaks.bed
+
+bedtools intersect  -a  ./peak_files/C9_EZH1_peaks
+_chr.bed  -b ./peak_files/C9_ATAC_unique.bed  > ./peak_files/C9_EZH1_C9_ATAC_peaks.bed
+
+ bedtools intersect  -a  ./peak_files/A7_EZH1_peaks
+_chr.bed  -b ./peak_files/WT_ATAC_unique.bed  > ./peak_files/A7_EZH1_WT_ATAC_peaks.bed
+
+ bedtools intersect  -a  ./peak_files/C9_EZH1_peaks
+_chr.bed  -b ./peak_files/WT_ATAC_unique.bed  > ./peak_files/C9_EZH1_WT_ATAC_peaks.bed
+
+
+#How many H3K27me3 peaks are maintained between WT and EZH2 KO clones?
+ bedtools intersect  -a  ./peak_files/A7_me3_peaks.bed  -b ./peak_files/WT_me3_peaks.bed  > ./peak_files/WT_A7_me3_peaks.bed
+
+bedtools subtract -a ./peak_files/A7_me3_peaks.bed -b ./peak_files/WT_A7_me3_peaks.bed > ./peak_files/A7_me3_gained_peaks.bed
+
+#how many of these are EZH1 decorated?
+bedtools intersect -a ./peak_files/A7_EZH1_peaks_chr.bed -b ./peak_files/WT_A7_me3_peaks.bed > ./peak_files/A7_EZH1_A7_me3_maintained.bed
+bedtools intersect -a ./peak_files/A7_EZH1_peaks_chr.bed -b ./peak_files/A7_me3_gained_peaks.bed > ./peak_files/A7_EZH1_A7_me3_gained.bed
+
+bedtools intersect -a ./peak_files/C9_EZH1_peaks_chr.bed -b ./peak_files/WT_C9_me3_peaks.bed > ./peak_files/C9_EZH1_C9_me3_maintained.bed
+bedtools intersect -a ./peak_files/C9_EZH1_peaks_chr.bed -b ./peak_files/C9_me3_gained_peaks.bed > ./peak_files/C9_EZH1_C9_me3_gained.bed
+
+
+######################
+bedtools intersect -a ./A7_me3_gained_peaks.filtered.bed -b ./A7_SUZ12_peaks_chr.filtered.bed > ./A7_me3_gained_SUZ12_peaks.filtered.bed
+
+bedtools subtract -a ./A7_me3_gained_peaks.filtered.bed -b ./A7_me3_gained_SUZ12_peaks.filtered.bed > ./A7_me3_gained_no_SUZ12_peaks.filtered.bed
+
+bedtools intersect -a ./A7_me3_maintained.filtered.bed -b ./A7_SUZ12_peaks_chr.filtered.bed > ./A7_me3_maintained_SUZ12_peaks.filtered.bed
+
+bedtools subtract -a ./A7_me3_maintained.filtered.bed -b ./A7_me3_maintained_SUZ12_peaks.filtered.bed > ./A7_me3_maintained_no_SUZ12_peaks.filtered.bed
+
+bedtools intersect -a ./C9_me3_gained_peaks.filtered.bed -b ./C9_SUZ12_peaks_chr.filtered.bed > ./C9_me3_gained_SUZ12_peaks.filtered.bed
+
+bedtools subtract -a ./C9_me3_gained_peaks.filtered.bed -b ./C9_me3_gained_SUZ12_peaks.filtered.bed > ./C9_me3_gained_no_SUZ12_peaks.filtered.bed
+
+bedtools intersect -a ./C9_me3_maintained.filtered.bed -b ./C9_SUZ12_peaks_chr.filtered.bed > ./C9_me3_maintained_SUZ12_peaks.filtered.bed
+
+bedtools subtract -a ./C9_me3_maintained.filtered.bed -b ./C9_me3_maintained_SUZ12_peaks.filtered.bed > ./C9_me3_maintained_no_SUZ12_peaks.filtered.bed
+
+bedtools intersect -a ./A7_me3_gained_EZH1_peaks.filtered.bed -b ./A7_me3_gained_SUZ12_peaks.filtered.bed > ./A7_me3_gained_EZH1_SUZ12_peaks.filtered.bed
+
+ bedtools subtract -a ./A7_me3_gained_peaks.filtered.bed -b ./A7_me3_gained_EZH1_peaks.filtered.bed ./A7_me3_gained_SUZ12_peaks.filtered.bed ./A7_me3_gained_EZH1_SUZ12_peaks.filtered.bed > ./A7_me3_gained_noPTM.filtered.bed
+
+
