@@ -1,0 +1,304 @@
+#H3K27me3
+computeMatrix reference-point -S ./bigwigs/WT_me3.bigwig ./bigwigs/A7_me3.bigwig ./bigwigs/C9_me3.bigwig \
+--referencePoint TSS -R ./ETP-ALL_chapter/ATAC-peaks/results/upregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/upregulated_in_c9.gtf  \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_me3_signal_upreg.mat.gz
+
+
+plotHeatmap -m ./heatmaps/heatmap_me3_signal_upreg.mat.gz \
+    -out ./heatmaps/plots/heatmap_me3_signal_upreg.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT H3K27me3" "A7 H3K27me3" "C9 H3K27me3"  \
+    --regionsLabel "Up in A7" "Up in C9" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Greens  \
+    --zMin 0 \
+    --zMax 0.3 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=12
+
+computeMatrix reference-point -S ./bigwigs/WT_me3.bigwig ./bigwigs/A7_me3.bigwig ./bigwigs/C9_me3.bigwig \
+--referencePoint TSS -R ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_c9.gtf \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_me3_signal_downreg.mat.gz
+
+
+plotHeatmap -m ./heatmaps/heatmap_me3_signal_downreg.mat.gz \
+    -out ./heatmaps/plots/heatmap_me3_signal_downreg.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT H3K27me3" "A7 H3K27me3" "C9 H3K27me3"  \
+    --regionsLabel "Down in A7" "Down in C9" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Greens  \
+    --zMin 0 \
+    --zMax 0.3 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=12
+
+
+#H2AK119ub
+computeMatrix reference-point -S ./bigwigs/WT_ub.bigwig ./bigwigs/A7_ub.bigwig ./bigwigs/C9_ub.bigwig \
+    --referencePoint TSS -R ./ETP-ALL_chapter/ATAC-peaks/results/upregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/upregulated_in_c9.gtf   \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_ub_signal_upreg.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_ub_signal_upreg.mat.gz \
+    -out ./heatmaps/plots/heatmap_ub_signal_upreg.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT H2AK119ub" "A7 H2AK119ub" "C9 H2AK119ub"  \
+    --regionsLabel "Up in A7" "Up in C9" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Purples Purples  \
+    --zMin 0 \
+    --zMax 0.2 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=12
+
+computeMatrix reference-point -S ./bigwigs/WT_ub.bigwig ./bigwigs/A7_ub.bigwig ./bigwigs/C9_ub.bigwig \
+    --referencePoint TSS -R ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_c9.gtf  \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_ub_signal_downreg.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_ub_signal_downreg.mat.gz \
+    -out ./heatmaps/plots/heatmap_ub_signal_downreg.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT H2AK119ub" "A7 H2AK119ub" "C9 H2AK119ub"  \
+    --regionsLabel  "Down in A7" "Down in C9"\
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Purples Purples  \
+    --zMin 0 \
+    --zMax 0.5 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=12
+
+
+#H3K27ac
+computeMatrix reference-point -S ./bigwigs/WT_ac.bigwig ./bigwigs/A7_ac.bigwig ./bigwigs/C9_ac_deduped.bigwig \
+--referencePoint TSS -R ./ETP-ALL_chapter/ATAC-peaks/results/upregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/upregulated_in_c9.gtf  \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_ac_signal_upreg.mat.gz
+
+
+plotHeatmap -m ./heatmaps/heatmap_ac_signal_upreg.mat.gz \
+    -out ./heatmaps/plots/heatmap_ac_signal_upreg.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT H3K27ac" "A7 H3K27ac" "C9 H3K27ac"  \
+    --regionsLabel "Up in A7" "Up in C9"  \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Greens  \
+    --zMin 0 \
+    --zMax 0.6 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=12
+
+computeMatrix reference-point -S ./bigwigs/WT_ac.bigwig ./bigwigs/A7_ac.bigwig ./bigwigs/C9_ac_deduped.bigwig \
+--referencePoint TSS -R ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_c9.gtf \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_ac_signal_downreg.mat.gz
+
+
+plotHeatmap -m ./heatmaps/heatmap_ac_signal_downreg.mat.gz \
+    -out ./heatmaps/plots/heatmap_ac_signal_downreg.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT H3K27ac" "A7 H3K27ac" "C9 H3K27ac"  \
+    --regionsLabel "Down in A7" "Down in C9" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Greens  \
+    --zMin 0 \
+    --zMax 0.6 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=12
+
+
+#SUZ12
+computeMatrix reference-point -S ./bigwigs/WT_SUZ12.bigwig ./bigwigs/A7_SUZ12.bigwig ./bigwigs/C9_SUZ12.bigwig \
+--referencePoint TSS -R ./ETP-ALL_chapter/ATAC-peaks/results/upregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/upregulated_in_c9.gtf  \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_SUZ12_signal_upreg.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_SUZ12_signal_upreg.mat.gz \
+    -out ./heatmaps/plots/heatmap_SUZ12_signal_upreg.pdf \
+    --refPointLabel=Peak \
+    --samplesLabel "WT SUZ12" "A7 SUZ12" "C9 SUZ12"  \
+    --regionsLabel  "Up in A7" "Up in C9" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Greys \
+    --zMin 0 \
+    --zMax 0.1 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=14
+
+computeMatrix reference-point -S ./bigwigs/WT_SUZ12.bigwig ./bigwigs/A7_SUZ12.bigwig ./bigwigs/C9_SUZ12.bigwig \
+--referencePoint TSS -R  ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_c9.gtf \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_SUZ12_signal_downreg.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_SUZ12_signal_downreg.mat.gz \
+    -out ./heatmaps/plots/heatmap_SUZ12_signal_downreg.pdf \
+    --refPointLabel=Peak \
+    --samplesLabel "WT SUZ12" "A7 SUZ12" "C9 SUZ12"  \
+    --regionsLabel  "Down in A7" "Down in C9" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Greys \
+    --zMin 0 \
+    --zMax 0.2 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=14
+
+
+#EZH1
+computeMatrix reference-point -S ./bigwigs/WT_EZH1.bigwig ./bigwigs/A7_EZH1.bigwig ./bigwigs/C9_EZH1.bigwig \
+--referencePoint TSS -R ./ETP-ALL_chapter/ATAC-peaks/results/upregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/upregulated_in_c9.gtf  \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_EZH1_signal_upreg.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_EZH1_signal_upreg.mat.gz \
+    -out ./heatmaps/plots/heatmap_EZH1_signal_upreg.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT EZH1" "A7 EZH1" "C9 EZH1"  \
+    --regionsLabel "Up in A7" "Up in C9"  \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Reds \
+    --zMin 0 \
+    --zMax 0.2 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=14
+
+computeMatrix reference-point -S ./bigwigs/WT_EZH1.bigwig ./bigwigs/A7_EZH1.bigwig ./bigwigs/C9_EZH1.bigwig \
+--referencePoint TSS -R ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_c9.gtf \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_EZH1_signal_downreg.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_EZH1_signal_downreg.mat.gz \
+    -out ./heatmaps/plots/heatmap_EZH1_signal_downreg.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT EZH1" "A7 EZH1" "C9 EZH1"  \
+    --regionsLabel  "Down in A7" "Down in C9" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Reds \
+    --zMin 0 \
+    --zMax 0.2 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=14
+
+
+#ATAC
+computeMatrix reference-point -S ./ETP-ALL_chapter/ATAC-peaks/open_fragments/WT.open.fragments.bigwig ./ETP-ALL_chapter/ATAC-peaks/open_fragments/A7.open.fragments.bigwig ./ETP-ALL_chapter/ATAC-peaks/open_fragments/C9.open.fragments.bigwig \
+--referencePoint TSS -R ./ETP-ALL_chapter/ATAC-peaks/results/upregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/upregulated_in_c9.gtf ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_c9.gtf \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_ATAC_signal_up_DEGs.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_ATAC_signal_up_DEGs.mat.gz \
+    -out ./heatmaps/plots/heatmap_ATAC_signal_up_DEGs.pdf \
+    --refPointLabel=TSS \
+    --samplesLabel "WT ATAC" "A7 ATAC" "C9 ATAC"  \
+    --regionsLabel "Up in A7" "Up in C9"  \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Oranges \
+    --zMin 0 \
+    --zMax 60 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=14
+
+
+
+computeMatrix reference-point -S ./ETP-ALL_chapter/ATAC-peaks/open_fragments/WT.open.fragments.bigwig ./ETP-ALL_chapter/ATAC-peaks/open_fragments/A7.open.fragments.bigwig ./ETP-ALL_chapter/ATAC-peaks/open_fragments/C9.open.fragments.bigwig \
+--referencePoint TSS -R ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_a7.gtf ./ETP-ALL_chapter/ATAC-peaks/results/downregulated_in_c9.gtf \
+    -p max/2 \
+    -bl ./public_datasets/genome_files/hg38-blacklist.v2.bed \
+    -bs=100 \
+    --beforeRegionStartLength 3000 \
+    --afterRegionStartLength 3000 \
+    -o ./heatmaps/heatmap_ATAC_signal_down_DEGs.mat.gz
+
+plotHeatmap -m ./heatmaps/heatmap_ATAC_signal_down_DEGs.mat.gz \
+    -out ./heatmaps/plots/heatmap_ATAC_signal_down_DEGs.pdf \
+    --refPointLabel=Peak \
+    --samplesLabel "WT ATAC" "A7 ATAC" "C9 ATAC"  \
+    --regionsLabel "Down in A7" "Down in C9" \
+    --missingDataColor=1 \
+    --legendLocation "upper-right" \
+    --xAxisLabel "Distance (bp)" \
+    --colorMap Oranges \
+    --zMin 0 \
+    --zMax 60 \
+    --dpi=800 \
+    --heatmapWidth=4 \
+    --heatmapHeight=14
